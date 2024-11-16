@@ -1,8 +1,11 @@
+"use client";
 import React from "react";
 import Navbar from "@/components/macro/Navbar";
 import { ChevronRight, ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const CompetitionSelector = () => {
+  const router = useRouter();
   const competitions = [
     { name: "English Premier League", id: "epl" },
     { name: "UEFA Champions League", id: "ucl" },
@@ -34,6 +37,7 @@ const CompetitionSelector = () => {
           {competitions.map((competition) => (
             <button
               key={competition.id}
+              onClick={() => router.push(`/fantasy/${competition.id}`)}
               className="w-full bg-[#6AEE96] hover:bg-[#6AEE96]/80 backdrop-blur-sm text-black p-6 rounded-lg flex justify-between items-center transition-all duration-200 ease-in-out group"
             >
               <span className="text-lg">{competition.name}</span>
