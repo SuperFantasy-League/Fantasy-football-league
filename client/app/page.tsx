@@ -1,13 +1,9 @@
 'use client'
 import Navbar from "@/components/macro/Navbar";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { useInView } from "motion/react"
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useTransform, useScroll } from "motion/react"
-import { Input } from "@/components/ui/input";
-import { Dropdown } from "@/components/micro/Dropdown";
 import Footer from "@/components/macro/Footer";
 import Networks from "@/components/macro/Networks";
 import Newsletter from "@/components/macro/Newsletter";
@@ -61,7 +57,7 @@ export default function Home() {
 
   return (
     <>
-    
+
       <Navbar />
   
       <main className="h-full">
