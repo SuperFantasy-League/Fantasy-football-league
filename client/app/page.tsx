@@ -59,13 +59,11 @@ export default function Home() {
     return () => unsubscribe();
 }, [scrollYProgress]);
 
-
-  // bg-[#adcdf5]
-
   return (
     <>
+    
       <Navbar />
-      {/* font-[family-name:var(--font-geist-sans)] */}
+  
       <main className="h-full">
 
         <section className="flex flex-col justify-center items-center hful py-24 -space-y-3">
