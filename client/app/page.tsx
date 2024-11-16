@@ -6,6 +6,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from "motion/react"
 import { useTransform, useScroll } from "motion/react"
+import { Input } from "@/components/ui/input";
+import { Dropdown } from "@/components/micro/Dropdown";
+import Footer from "@/components/macro/Footer";
+import Networks from "@/components/macro/Networks";
+import Newsletter from "@/components/macro/Newsletter";
+import GetStartedButton from "@/components/micro/GetStartedButton";
 
 
 
@@ -17,23 +23,41 @@ export default function Home() {
 
   const backgroundColor = useTransform(
     scrollYProgress,
-    [0, 0.5],
+    [0, 0.2],
     ["#adcdf5", "#0f0"]
   )
 
+  // useEffect(() => {
+  //   const unsubscribe = scrollYProgress.onChange((latest) => {
+  //     if (latest > 0) {
+  //       setWalletText("Focus on games, payouts are automatic");
+  //       setTagText("convenient");
+  //     } else {
+  //       setWalletText("Create Your wallet In seconds.");
+  //       setTagText("simple");
+  //     }
+  //   });
+
+  //   return () => unsubscribe();
+  // }, [scrollYProgress]);
+
   useEffect(() => {
     const unsubscribe = scrollYProgress.onChange((latest) => {
-      if (latest > -5) {
-        setWalletText("Focus on games, payouts are automatic");
-        setTagText("convenient");
-      } else {
-        setWalletText("Create Your wallet In seconds.");
-        setTagText("simple");
-      }
+        const featuresSection = document.querySelector('.features');
+        if (featuresSection) {
+            const { top } = featuresSection.getBoundingClientRect();
+            if (top < window.innerHeight && top > 0) { // Check if the section is in view
+              setWalletText("Create Your wallet In seconds.");
+              setTagText("simple");
+            } else {
+              setWalletText("Focus on games, payouts are automatic");
+              setTagText("convenient");
+            }
+        }
     });
 
     return () => unsubscribe();
-  }, [scrollYProgress]);
+}, [scrollYProgress]);
 
 
   // bg-[#adcdf5]
@@ -47,18 +71,18 @@ export default function Home() {
         <section className="flex flex-col justify-center items-center hful py-24 -space-y-3">
           <div className="flex flex-col justify-center items-center">
 
-          <p className="text-2xl font-semibold text-center inline-flex gap-2 items-center">
-            Play the 
-            <Image 
-              src={'/play.svg'}
-              alt="play"
-              width={22}
-              height={22}
-            /> 
-            game
-          </p>
-          
-          <p className="text-2xl font-semibold text-center inline-flex items-center -pt-4">your way with ace</p>
+            <p className="text-2xl font-semibold text-center inline-flex gap-2 items-center">
+              Play the
+              <Image
+                src={'/play.svg'}
+                alt="play"
+                width={22}
+                height={22}
+              />
+              game
+            </p>
+
+            <p className="text-2xl font-semibold text-center inline-flex items-center -pt-4">your way with ace</p>
           </div>
           <h1 className="text-[9em] tracking-tighter font-semibold inline-flex items-center gap-5 font-[family-name:var(--font-geist-sans)]">
             Play
@@ -74,15 +98,7 @@ export default function Home() {
             Win.
           </h1>
           <div className="pt-7">
-            <Button className="bg-black rounded-[50px] px-8 py-7 text-xl inline-flex gap-5 items-center border border-gray-500 shadow-lg">
-              <div className="inline-flex items-center">
-                <span className="w-4 h-4 border border-white animate-pulse delay-300 rounded-full bg-yellow-300"></span>
-                <span className="w-4 h-4 border border-white animate-pulse delay-500 rounded-full bg-pink-300 -ml-2"></span>
-                <span className="w-4 h-4 border border-white animate-pulse delay-700 rounded-full bg-blue-300 -ml-2"></span>
-              </div>
-
-              Get started
-            </Button>
+            <GetStartedButton />
           </div>
         </section>
 
@@ -194,6 +210,88 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="bg-[#fafafa] mt-20 p-16 space-y-16">
+          <div className="flex justify-center px-5">
+            <h1 className="text-8xl tracking-tighter font-medium text-center text-purple-800">
+              Join
+              <Image
+                src={'/bolt.svg'}
+                alt="play"
+                width={60}
+                height={60}
+                className="inline-block mx-4"
+              />
+              <span className="">
+                the future of Fantasy football
+              </span>
+            </h1>
+          </div>
+
+          <div className="grid grid-cols-4 gap-2 items-center">
+
+            <div className="h-[29em] rounded-2xl bg-yellow-200/60 border shadow-sm p-4">
+              <div className="flex flex-col items-start justify-between h-full">
+                <p className="text-xl font-medium tracking-tigher">
+                  Draft players, form powerful lineups, and go head-to-head against other fantasy managers.
+                </p>
+                <Image
+                  src={'/team.png'}
+                  alt="Team Lineup"
+                  width={80}
+                  height={80}
+                  className="w-full "
+                />
+              </div>
+            </div>
+
+            <div className="h-[29em] rounded-2xl bg-pink-200/60 border shadow-sm">
+              <div className="flex flex-col items-start justify-between h-full">
+                <p className="text-xl font-medium tracking-tigher p-4">
+                  Place bets across a wide range of games, from weekly matchups to season-long events.
+                </p>
+                <Image
+                  src={'/fiery-ball.png'}
+                  alt="Team Lineup"
+                  width={80}
+                  height={80}
+                  className="w-full px-3 pt-4"
+                />
+              </div>
+            </div>
+
+            <div className="h-[29em] rounded-2xl bg-blue-200/60 border shadow-sm">
+              <div className="flex flex-col items-start justify-between h-full">
+                <p className="text-xl font-medium tracking-tigher p-4">
+                  Compete in daily fantasy leagues, or stick around for the full season and maximize your winnings.
+                </p>
+                <Image
+                  src={'/ballInNet.png'}
+                  alt="Team Lineup"
+                  width={80}
+                  height={80}
+                  className="w-full"
+                />
+              </div>
+            </div>
+
+            <div className="h-[29em] rounded-2xl bg-green-200/60 border shadow-sm">
+              <div className="flex flex-col items-start justify-between h-full">
+                <p className="text-xl font-medium tracking-tigher p-4">
+                  Join a growing community of fantasy enthusiasts and track your progress on global leaderboards.
+                </p>
+                <Image
+                  src={'/leaderboard.png'}
+                  alt="Team Lineup"
+                  width={80}
+                  height={80}
+                  className="w-full h-[70%]"
+                />
+              </div>
+            </div>
+
+          </div>
+        </section>
+
         <section className="space-y-12">
 
           <div className="bg-[#fafafa] p-16 rounded-2xl">
@@ -227,6 +325,17 @@ export default function Home() {
           </div>
 
         </section>
+
+
+        <section className="px-8 py-16 space-y-32">
+
+          <Networks />
+
+          <Newsletter />
+
+        </section>
+
+        <Footer />
 
       </main>
 
