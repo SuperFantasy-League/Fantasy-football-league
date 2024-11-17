@@ -87,6 +87,7 @@ export default function Home() {
                 width={80}
                 height={80}
                 style={{ animation: 'spin 4000ms linear infinite' }}
+                className="animate-spin"
               />
             </span>
             Win.
