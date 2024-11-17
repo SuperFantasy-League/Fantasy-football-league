@@ -37,7 +37,7 @@ export default function Home() {
   // }, [scrollYProgress]);
 
   useEffect(() => {
-    const unsubscribe = scrollYProgress.onChange((latest) => {
+    const unsubscribe = scrollYProgress.onChange(() => {
       const featuresSection = document.querySelector(".features");
       if (featuresSection) {
         const { top } = featuresSection.getBoundingClientRect();
