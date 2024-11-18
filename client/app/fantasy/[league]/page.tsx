@@ -4,11 +4,12 @@ import Navbar from "@/components/macro/Navbar";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const League = () => {
   const pathname = usePathname();
   const league = pathname.replace("/fantasy/", "");
-  console.log(league);
+
   return (
     <>
       <Navbar />
