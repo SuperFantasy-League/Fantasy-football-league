@@ -25,7 +25,7 @@ const PlayerSelections = () => {
   return (
     <>
       {/* Right Sidebar */}
-      <div className="w-96 bg-white overflow-y-auto flex-shrink-0">
+      <div className="w-96 shadow-lg border bg-white overflow-y-auto flex-shrink-0">
         {/* Header with gradient */}
         <div className="h-16 rounded-t-lg bg-gradient-to-r from-cyan-400 via-blue-500 to-green-400 p-4">
           <h1 className="text-2xl font-bold text-black">Player Selection</h1>
