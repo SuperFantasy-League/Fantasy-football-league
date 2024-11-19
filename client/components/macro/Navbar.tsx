@@ -10,7 +10,7 @@ const Navbar = () => {
         <nav className="py-4 px-4 rounded-xl bg-[#ecefec] inline-flex items-center divide-x divide-[#d1d6d2]">
           <div className="pr-3">
             <Link
-              href={"/fantasy"}
+              href={""}
               className="px-5 py-2 rounded-3xl hover:bg-[#d1d6d2] text-sm"
             >
               Fantasy
@@ -46,8 +46,6 @@ const Navbar = () => {
         </Button>
       </header>
     </>
-    // #5a585a
-    // #d1d6d2
   );
 };
 

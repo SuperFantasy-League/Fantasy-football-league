@@ -1,9 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import FootballField from "@/components/macro/FootballField";
 import PlayerSelections from "@/components/macro/PlayerSelections";
 import {
@@ -14,11 +12,6 @@ import {
 } from "@/components/ui/tabs"
 
 const League = () => {
-
-  const pathname = usePathname();
-  const league = pathname.replace("/fantasy/", "");
-
-  console.log(league);
 
   return (
     <>
