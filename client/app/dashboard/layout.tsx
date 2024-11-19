@@ -7,7 +7,6 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import {
     SidebarInset,
@@ -42,9 +41,6 @@ export default function Page({ children }: { children: React.ReactNode }) {
                             </BreadcrumbList>
                         </Breadcrumb>
                     </div>
-                    {/* <Button className="bg-black rounded-3xl px-6 py-6 text-md">
-                        Connect wallet
-                    </Button> */}
                     <ConnectButton client={client} theme="dark" />
                 </header>
 
