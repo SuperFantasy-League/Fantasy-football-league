@@ -14,8 +14,12 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { ConnectButton } from "thirdweb/react";
+import { createThirdwebClient } from "thirdweb";
+
 
 export default function Page({ children }: { children: React.ReactNode }) {
+    const client = createThirdwebClient({ clientId: '878e3e25d922335d83501b9ee66582aa' });
     return (
         <SidebarProvider>
             <AppSidebar />
@@ -38,9 +42,10 @@ export default function Page({ children }: { children: React.ReactNode }) {
                             </BreadcrumbList>
                         </Breadcrumb>
                     </div>
-                    <Button className="bg-black rounded-3xl px-6 py-6 text-md">
+                    {/* <Button className="bg-black rounded-3xl px-6 py-6 text-md">
                         Connect wallet
-                    </Button>
+                    </Button> */}
+                    <ConnectButton client={client} theme="dark" />
                 </header>
 
                 {children}
