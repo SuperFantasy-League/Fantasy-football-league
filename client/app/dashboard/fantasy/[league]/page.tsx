@@ -1,18 +1,51 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import FootballField from "@/components/macro/FootballField";
 import FootballRoster from "@/components/macro/FootballRoster";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from "react";
 
 const League = () => {
+  const [leagueName, setLeagueName] = useState("");
   const pathname = usePathname();
-  const league = pathname.replace("/fantasy/", "");
+  const league = pathname.replace("/dashboard/fantasy/", "");
 
   console.log(league);
+
+  useEffect(() => {
+    if (league) {
+      switch (league) {
+        case "ucl":
+          setLeagueName("UEFA Champions League");
+          break;
+        case "epl":
+          setLeagueName("English Premier League");
+          break;
+        case "scp":
+          setLeagueName("Scottish Premiership");
+          break;
+        case "bundesliga":
+          setLeagueName("Bundesliga");
+          break;
+        case "laliga":
+          setLeagueName("La Liga");
+          break;
+        case "ligue1":
+          setLeagueName("Ligue 1");
+          break;
+        default:
+          break;
+      }
+    }
+
+    return () => {
+      setLeagueName("");
+    };
+  }, [league]);
 
   return (
     <>
@@ -24,9 +57,7 @@ const League = () => {
           <ArrowLeft className="w-4 h-4" />
           <span>Back</span>
         </Link>
-        <h1 className="text-3xl font-bold text-black">
-          League of Legends season 1
-        </h1>
+        <h1 className="text-3xl font-bold text-black">{leagueName} 24/25</h1>
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
