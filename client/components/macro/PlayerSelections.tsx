@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { Search } from "lucide-react";
 
@@ -165,7 +165,7 @@ const PlayerSelections = () => {
                   />
                 </div>
                 <div className="flex items-center flex-1">
-                  <img
+                  <Image
                     src={player.image}
                     alt={player.name}
                     className="w-10 h-10 rounded-lg mr-3"

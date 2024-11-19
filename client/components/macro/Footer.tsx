@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Dropdown } from "../micro/Dropdown";
-import { Button } from "../ui/button";
+//import { Button } from "../ui/button";
 import GetStartedButton from "../micro/GetStartedButton";
 
 const Footer = () => {
