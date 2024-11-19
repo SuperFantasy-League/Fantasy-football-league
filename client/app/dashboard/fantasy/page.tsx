@@ -1,10 +1,9 @@
-'use client'
+"use client";
 import React from "react";
 import { ChevronRight, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 const CompetitionSelector = () => {
-
   const competitions = [
     { name: "English Premier League", id: "epl" },
     { name: "UEFA Champions League", id: "ucl" },
@@ -16,9 +15,7 @@ const CompetitionSelector = () => {
 
   return (
     <>
-      
       <div className="max-w-full">
-    
         <div className="py-8">
           <h1 className="text-3xl font-bold text-black">Fantasy Football</h1>
         </div>
@@ -36,9 +33,7 @@ const CompetitionSelector = () => {
               className="w-full bg-[#6AEE96] hover:bg-[#6AEE96]/80 backdrop-blur-sm text-black p-6 rounded-lg flex justify-between items-center transition-all duration-200 ease-in-out group"
             >
               <span className="text-lg">{competition.name}</span>
-              <ChevronRight
-                className="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity duration-20"
-              />
+              <ChevronRight className="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity duration-20" />
             </Link>
           ))}
         </div>
