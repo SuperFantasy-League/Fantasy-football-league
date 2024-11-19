@@ -8,6 +8,7 @@ import FootballField from "@/components/macro/FootballField";
 import FootballRoster from "@/components/macro/FootballRoster";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
+import TeamDisplay from "@/components/macro/TeamDisplay";
 
 const League = () => {
   const [leagueName, setLeagueName] = useState("");
@@ -58,6 +59,7 @@ const League = () => {
           <span>Back</span>
         </Link>
         <h1 className="text-3xl font-bold text-black">{leagueName} 24/25</h1>
+        {/*   <TeamDisplay teams={teams} /> */}
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
