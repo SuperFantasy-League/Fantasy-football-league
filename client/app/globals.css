@@ -81,3 +81,38 @@
   }
 }
 
+
+/* From Uiverse.io by alexmaracinaru */ 
+.proceed {
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+  padding: 5px 20px;
+  border-radius: 100px;
+  /* background: #cfef00; */
+  background: #b8d401;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+.proceed:hover {
+  background: #c4e201;
+}
+
+.proceed > svg {
+  width: 22px;
+  margin-left: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.proceed:hover svg {
+  transform: translateX(5px);
+}
+
+.proceed:active {
+  transform: scale(0.95);
+}
+
+
