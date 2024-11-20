@@ -1,7 +1,3 @@
-"use client";
-
-import FootballField from "@/components/macro/FootballField";
-import FootballRoster from "@/components/macro/FootballRoster";
 
 import { ArrowRight } from "lucide-react";
 import { TabsContent } from "@/components/ui/tabs";
@@ -17,34 +13,9 @@ import CreateLeagueModal from "@/components/macro/CreateLeagueModal";
 
 const League = () => {
 
-  return (
-    <>
-      <TabsContent value="overview">
-        <div className="py-10 flex items-center justify-between">
-          <div className="flex flex-col gap-3 text-black">
-            <h2 className="text-xl text-black font-semibold">
-              Pick Your Squad
-            </h2>
-            <p>
-              {" "}
-              Select a minimum of 3 players from a single team or &apos;Auto
-              Pick&apos; if you&apos;re short of time
-            </p>
-          </div>
-
-          <button className="px-10 py-2 backdrop-blur-sm border bg-[#6AEE96]/30 border-emerald-500/20 text-green-900 text-center rounded-full relative">
-            <span>Auto Pick</span>
-            <div className="absolute inset-x-0  h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-emerald-500 to-transparent" />
-          </button>
-        </div>
-
-        <div className="flex justify-between gap-4 pb-10">
-          <FootballField />
-          <FootballRoster />
-        </div>
-      </TabsContent>
-
-      <TabsContent value="leagues" className="">
+    return (
+        <>
+            <TabsContent value="leagues" className="">
 
                 <h2 className="text-3xl tracking-tighter font-medium py-7">Leagues 🚀</h2>
 
@@ -115,8 +86,8 @@ const League = () => {
                 </div>
 
             </TabsContent>
-    </>
-  );
+        </>
+    );
 };
 
 export default League;

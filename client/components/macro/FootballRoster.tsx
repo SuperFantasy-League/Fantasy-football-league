@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { Search } from "lucide-react";
 
-const PlayerSelections = () => {
+const FootballRoster = () => {
   const players = [
     {
       name: "Onana",
@@ -10,7 +10,6 @@ const PlayerSelections = () => {
       position: "GKP",
       cost: 5.1,
       points: 53,
-      image: "/api/placeholder/40/40",
     },
     {
       name: "Sels",
@@ -18,7 +17,6 @@ const PlayerSelections = () => {
       position: "GKP",
       cost: 4.7,
       points: 50,
-      image: "/api/placeholder/40/40",
     },
   ];
 
@@ -132,44 +130,29 @@ const PlayerSelections = () => {
             </div>
           </div>
 
-          {/* Position Filter */}
-          <div className="space-x-2">
-            <div className="h-10 bg-purple-900  rounded-lg flex items-center px-4 py-2">
-              <span className="text-white">Goalkeepers</span>
+          {/* Position Filter 2 */}
+          <div className="grid grid-rows-3 gap-2 ">
+            <div>
+              <div className="h-10 bg-purple-900 rounded-lg flex items-center text-white px-2 py-2">
+                <div className="flex-1">
+                  <span className="text-white">Goalkeepers</span>
+                </div>
+                <div className="w-16 text-right">£</div>
+                <div className="w-16 text-right">**</div>
+              </div>
             </div>
           </div>
 
           {/* Players List */}
-          <div className="space-y-2">
-            {/* Headers */}
-            <div className="flex items-center text-sm text-gray-500 px-2 sticky top-24 bg-white py-2">
-              <div className="flex-1"></div>
-              <div className="w-16 text-right">£</div>
-              <div className="w-16 text-right">**</div>
-            </div>
-
+          <div>
             {/* Player Items */}
             {players.map((player) => (
               <div
                 key={player.name}
                 className="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer"
               >
-                <div className="w-8 text-gray-400">
-                  {" "}
-                  <Image
-                    src={"/info-svgrepo-com.svg"}
-                    alt="Player Info"
-                    width={10}
-                    height={10}
-                    className="w-full"
-                  />
-                </div>
+                <div className="w-8 text-gray-400"></div>
                 <div className="flex items-center flex-1">
-                  <Image
-                    src={player.image}
-                    alt={player.name}
-                    className="w-10 h-10 rounded-lg mr-3"
-                  />
                   <div>
                     <div className="font-semibold text-purple-900">
                       {player.name}
@@ -190,4 +173,4 @@ const PlayerSelections = () => {
   );
 };
 
-export default PlayerSelections;
+export default FootballRoster;

@@ -80,7 +80,7 @@ export default function Home() {
                 alt="football"
                 width={80}
                 height={80}
-                style={{ animation: 'spin 4000ms linear infinite' }}
+                style={{ animation: "spin 4000ms linear infinite" }}
                 className="animate-spin"
               />
             </span>

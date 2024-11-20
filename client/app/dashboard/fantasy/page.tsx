@@ -1,50 +1,45 @@
-'use client'
+"use client";
 import React from "react";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
 import ProceedButton from "@/components/micro/ProceedButton";
 
 const CompetitionSelector = () => {
-
   const competitions = [
     {
       name: "English Premier League",
       id: "epl",
-      image: '/england.jpg'
+      image: "/england.jpg",
     },
     {
       name: "UEFA Champions League",
       id: "ucl",
-      image: '/uefa.jpg'
+      image: "/uefa.jpg",
     },
     {
       name: "Scottish Premiership",
       id: "scp",
-      image: '/scotland.jpg'
+      image: "/scotland.jpg",
     },
     {
       name: "Bundesliga",
       id: "bundesliga",
-      image: '/bundesliga.jpg'
+      image: "/bundesliga.jpg",
     },
     {
       name: "La Liga",
       id: "laliga",
-      image: '/laliga.jpg'
+      image: "/laliga.jpg",
     },
     {
       name: "Ligue 1",
       id: "ligue1",
-      image: '/ligue1.jpg'
+      image: "/ligue1.jpg",
     },
   ];
 
   return (
     <>
-
       <div className="max-w-full">
-
         <div className="py-8">
           <h1 className="text-3xl font-bold text-black">Fantasy Football</h1>
         </div>
@@ -70,13 +65,14 @@ const CompetitionSelector = () => {
                     {competition.name}
                   </h3>
                   <div className="w-2/4">
-                    <ProceedButton path={`/dashboard/fantasy/${competition.id}`} />
+                    <ProceedButton
+                      path={`/dashboard/fantasy/${competition.id}`}
+                    />
                   </div>
                 </div>
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </>
