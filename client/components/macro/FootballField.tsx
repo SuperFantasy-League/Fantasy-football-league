@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import PlayerSlot from "../micro/PlayerSlot";
+import PlayerCard from "../micro/PlayerCard";
 const FootballField = () => {
   return (
     <>
@@ -14,28 +14,28 @@ const FootballField = () => {
             className="object-contain"
           />
           <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-24 gap-16">
-            <PlayerSlot role={"GoalKeeper"} />
-            <PlayerSlot role={"GoalKeeper"} />
+            <PlayerCard role={"GoalKeeper"} />
+            <PlayerCard role={"GoalKeeper"} />
           </div>
           <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-64 gap-12">
-            <PlayerSlot role={"Defender"} />
-            <PlayerSlot role={"Defender"} />
-            <PlayerSlot role={"Defender"} />
-            <PlayerSlot role={"Defender"} />
-            <PlayerSlot role={"Defender"} />
+            <PlayerCard role={"Defender"} />
+            <PlayerCard role={"Defender"} />
+            <PlayerCard role={"Defender"} />
+            <PlayerCard role={"Defender"} />
+            <PlayerCard role={"Defender"} />
           </div>
 
           <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-[416px] gap-12">
-            <PlayerSlot role={"Midfielder"} />
-            <PlayerSlot role={"Midfielder"} />
-            <PlayerSlot role={"Midfielder"} />
-            <PlayerSlot role={"Midfielder"} />
-            <PlayerSlot role={"Midfielder"} />
+            <PlayerCard role={"Midfielder"} />
+            <PlayerCard role={"Midfielder"} />
+            <PlayerCard role={"Midfielder"} />
+            <PlayerCard role={"Midfielder"} />
+            <PlayerCard role={"Midfielder"} />
           </div>
           <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-[576px] gap-12">
-            <PlayerSlot role={"Forward"} />
-            <PlayerSlot role={"Forward"} />
-            <PlayerSlot role={"Forward"} />
+            <PlayerCard role={"Forward"} />
+            <PlayerCard role={"Forward"} />
+            <PlayerCard role={"Forward"} />
           </div>
         </div>
       </div>

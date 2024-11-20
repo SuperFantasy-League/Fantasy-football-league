@@ -8,14 +8,14 @@ import FootballField from "@/components/macro/FootballField";
 import FootballRoster from "@/components/macro/FootballRoster";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
+import { useTeams } from "@/hooks/useTeams";
 import TeamDisplay from "@/components/macro/TeamDisplay";
 
 const League = () => {
   const [leagueName, setLeagueName] = useState("");
   const pathname = usePathname();
   const league = pathname.replace("/dashboard/fantasy/", "");
-
-  console.log(league);
+  const { teams } = useTeams(2);
 
   useEffect(() => {
     if (league) {
@@ -59,7 +59,9 @@ const League = () => {
           <span>Back</span>
         </Link>
         <h1 className="text-3xl font-bold text-black">{leagueName} 24/25</h1>
-        {/*   <TeamDisplay teams={teams} /> */}
+        <div className="p-3">
+          <TeamDisplay teams={teams} />
+        </div>
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
