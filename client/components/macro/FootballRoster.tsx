@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Search } from "lucide-react";
+import PlayerSlot from "../micro/PlayerSlot";
 
 const FootballRoster = () => {
   const players = [
@@ -130,22 +131,83 @@ const FootballRoster = () => {
             </div>
           </div>
 
-          {/* Position Filter 2 */}
-          <div className="grid grid-rows-3 gap-2 ">
-            <div>
-              <div className="h-10 bg-purple-900 rounded-lg flex items-center text-white px-2 py-2">
-                <div className="flex-1">
-                  <span className="text-white">Goalkeepers</span>
-                </div>
-                <div className="w-16 text-right">£</div>
-                <div className="w-16 text-right">**</div>
+          {/* Goalkeeper Position Filter */}
+          <div>
+            <div className="h-10 bg-purple-900 rounded-lg flex items-center text-white px-2 py-2">
+              <div className="flex-1">
+                <span className="text-white">Goalkeepers</span>
               </div>
+              <div className="w-16 text-right">£</div>
+              <div className="w-16 text-right">**</div>
             </div>
+            <PlayerSlot />
+            <PlayerSlot />
+          </div>
+
+          {/* Defender Position Filter */}
+          <div>
+            <div className="h-10 bg-purple-900 rounded-lg flex items-center text-white px-2 py-2">
+              <div className="flex-1">
+                <span className="text-white">Defender</span>
+              </div>
+              <div className="w-16 text-right">£</div>
+              <div className="w-16 text-right">**</div>
+            </div>
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+          </div>
+
+          {/* Midfielder Position Filter */}
+          <div>
+            <div className="h-10 bg-purple-900 rounded-lg flex items-center text-white px-2 py-2">
+              <div className="flex-1">
+                <span className="text-white">Defender</span>
+              </div>
+              <div className="w-16 text-right">£</div>
+              <div className="w-16 text-right">**</div>
+            </div>
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+          </div>
+
+          {/* Midfielder Position Filter */}
+          <div>
+            <div className="h-10 bg-purple-900 rounded-lg flex items-center text-white px-2 py-2">
+              <div className="flex-1">
+                <span className="text-white">Defender</span>
+              </div>
+              <div className="w-16 text-right">£</div>
+              <div className="w-16 text-right">**</div>
+            </div>
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
+            <PlayerSlot />
           </div>
 
           {/* Players List */}
-          <div>
-            {/* Player Items */}
+          {/*   <div>
+            Player Items 
             {players.map((player) => (
               <div
                 key={player.name}
@@ -167,6 +229,7 @@ const FootballRoster = () => {
               </div>
             ))}
           </div>
+          */}
         </div>
       </div>
     </>
