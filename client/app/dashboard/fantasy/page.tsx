@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
 import ProceedButton from "@/components/micro/ProceedButton";
 
@@ -51,17 +49,6 @@ const CompetitionSelector = () => {
           <h2 className="text-xl text-black font-semibold">
             Pick a competition
           </h2>
-
-          {/* {competitions.map((competition) => (
-            <Link
-              href={`/dashboard/fantasy/${competition.id}`}
-              key={competition.id}
-              className="w-full bg-[#6AEE96] hover:bg-[#6AEE96]/80 backdrop-blur-sm text-black p-6 rounded-lg flex justify-between items-center transition-all duration-200 ease-in-out group"
-            >
-              <span className="text-lg">{competition.name}</span>
-              <ChevronRight className="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity duration-20" />
-            </Link>
-          ))} */}
 
           <div className="grid grid-cols-3 gap-2">
             {competitions.map((competition) => (

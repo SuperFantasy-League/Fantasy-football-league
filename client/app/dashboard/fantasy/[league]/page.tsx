@@ -1,111 +1,120 @@
 "use client";
 
-// import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import FootballField from "@/components/macro/FootballField";
 import FootballRoster from "@/components/macro/FootballRoster";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useEffect, useState } from "react";
-import { useTeams } from "@/hooks/useTeams";
-import TeamDisplay from "@/components/macro/TeamDisplay";
+
+import { ArrowRight } from "lucide-react";
+import { TabsContent } from "@/components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
+import CreateLeagueModal from "@/components/macro/CreateLeagueModal";
 
 const League = () => {
-  const [leagueName, setLeagueName] = useState("");
-  const pathname = usePathname();
-  const league = pathname.replace("/dashboard/fantasy/", "");
-  const { teams } = useTeams(2);
-
-  useEffect(() => {
-    if (league) {
-      switch (league) {
-        case "ucl":
-          setLeagueName("UEFA Champions League");
-          break;
-        case "epl":
-          setLeagueName("English Premier League");
-          break;
-        case "scp":
-          setLeagueName("Scottish Premiership");
-          break;
-        case "bundesliga":
-          setLeagueName("Bundesliga");
-          break;
-        case "laliga":
-          setLeagueName("La Liga");
-          break;
-        case "ligue1":
-          setLeagueName("Ligue 1");
-          break;
-        default:
-          break;
-      }
-    }
-
-    return () => {
-      setLeagueName("");
-    };
-  }, [league]);
 
   return (
     <>
-      <div className="pt-8 pb-4">
-        <Link
-          href={"/dashboard/fantasy"}
-          className="inline-flex items-center gap-2 bg-black shadow-lg border text-white rounded-3xl text-sm px-3 py-2 mb-6"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back</span>
-        </Link>
-        <h1 className="text-3xl font-bold text-black">{leagueName} 24/25</h1>
-        <div className="p-3">
-          <TeamDisplay teams={teams} />
+      <TabsContent value="overview">
+        <div className="py-10 flex items-center justify-between">
+          <div className="flex flex-col gap-3 text-black">
+            <h2 className="text-xl text-black font-semibold">
+              Pick Your Squad
+            </h2>
+            <p>
+              {" "}
+              Select a minimum of 3 players from a single team or &apos;Auto
+              Pick&apos; if you&apos;re short of time
+            </p>
+          </div>
+
+          <button className="px-10 py-2 backdrop-blur-sm border bg-[#6AEE96]/30 border-emerald-500/20 text-green-900 text-center rounded-full relative">
+            <span>Auto Pick</span>
+            <div className="absolute inset-x-0  h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-emerald-500 to-transparent" />
+          </button>
         </div>
-      </div>
 
-      <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="flex items-center gap-4 py-8 w-2/4">
-          <TabsTrigger className="py-2 px-6" value="overview">
-            Overview
-          </TabsTrigger>
-          <TabsTrigger className="py-2 px-6" value="team">
-            My team
-          </TabsTrigger>
-          <TabsTrigger className="py-2 px-6" value="matches">
-            Matches
-          </TabsTrigger>
-          <TabsTrigger className="py-2 px-6" value="leagues">
-            Leagues
-          </TabsTrigger>
-        </TabsList>
+        <div className="flex justify-between gap-4 pb-10">
+          <FootballField />
+          <FootballRoster />
+        </div>
+      </TabsContent>
 
-        <TabsContent value="overview">
-          <div className="py-10 flex items-center justify-between">
-            <div className="flex flex-col gap-3 text-black">
-              <h2 className="text-xl text-black font-semibold">
-                Pick Your Squad
-              </h2>
-              <p>
-                {" "}
-                Select a minimum of 3 players from a single team or &apos;Auto
-                Pick&apos; if you&apos;re short of time
-              </p>
+      <TabsContent value="leagues" className="">
+
+        <h2 className="text-3xl tracking-tighter font-medium py-7">Leagues 🚀</h2>
+
+        <div className="grid grid-cols-2 gap-6">
+
+          <Card className="flex flex-col justify-between items-start">
+            <CardHeader>
+              <CardTitle>Private Leagues ✍️</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-lg font-light">You aren’t in any private leagues yet. Create or join one and wager with friends</p>
+            </CardContent>
+            <CardFooter className="grid grid-cols-2 gap-5">
+              <CreateLeagueModal />
+              <Button>Join a League</Button>
+            </CardFooter>
+          </Card>
+
+          <Card className="flex flex-col justify-between items-start">
+            <CardHeader>
+              <CardTitle>Public Leagues 🛜</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-lg font-light">Join a public league to play against a small, randomly selected group of other acefantasy game players</p>
+            </CardContent>
+            <CardFooter className="">
+              {/* <Button variant="outline">Cancel</Button> */}
+              <Button>Join Public League</Button>
+            </CardFooter>
+          </Card>
+
+          <Card>
+            <div className="flex justify-between items-center p-5">
+              <h3 className="h3 text-3xl tracking-tighter font-medium">
+                Fire Nation
+              </h3>
+              <div className="inline-flex items-center gap-3">
+                View League
+                <ArrowRight />
+              </div>
             </div>
+          </Card>
 
-            <button className="px-10 py-2 backdrop-blur-sm border bg-[#6AEE96]/30 border-emerald-500/20 text-green-900 text-center rounded-full relative">
-              <span>Auto Pick</span>
-              <div className="absolute inset-x-0  h-px -bottom-px bg-gradient-to-r w-3/4 mx-auto from-transparent via-emerald-500 to-transparent" />
-            </button>
-          </div>
+          <Card>
+            <div className="flex justify-between items-center p-5">
+              <h3 className="h3 text-3xl tracking-tighter font-medium">
+                Beyond the wall
+              </h3>
+              <div className="inline-flex items-center gap-3">
+                View League
+                <ArrowRight />
+              </div>
+            </div>
+          </Card>
 
-          <div className="flex justify-between gap-4 pb-10">
-            <FootballField />
-            <FootballRoster />
-          </div>
-        </TabsContent>
-        <TabsContent value="team"></TabsContent>
-      </Tabs>
+          <Card>
+            <div className="flex justify-between items-center p-5">
+              <h3 className="h3 text-3xl tracking-tighter font-medium">
+                Valhalla
+              </h3>
+              <div className="inline-flex items-center gap-3">
+                View League
+                <ArrowRight />
+              </div>
+            </div>
+          </Card>
+
+        </div>
+
+      </TabsContent>
     </>
   );
 };

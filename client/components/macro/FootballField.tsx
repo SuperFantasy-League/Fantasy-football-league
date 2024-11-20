@@ -5,7 +5,7 @@ const FootballField = () => {
   return (
     <>
       <div className="relative w-full">
-        <div className="p-6 bg-gray-100 rounded-md relative w-full">
+        <div className="bg-gray-100 rounded-md relative w-full">
           <Image
             src={"/aceFantasy.png"}
             alt="football"
