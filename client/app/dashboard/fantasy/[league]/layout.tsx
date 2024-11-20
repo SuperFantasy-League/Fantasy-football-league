@@ -70,9 +70,7 @@ const League = ({ children }: { children: React.ReactNode }) => {
                         Matches
                     </TabsTrigger>
                     <TabsTrigger className="py-2 px-6" value="leagues">
-                        <Link href={`${pathname}/userleagues`}>
-                            Leagues
-                        </Link>
+                        Leagues
                     </TabsTrigger>
                 </TabsList>
 
