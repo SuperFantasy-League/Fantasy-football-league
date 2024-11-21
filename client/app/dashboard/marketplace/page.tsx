@@ -1,107 +1,75 @@
-"use client";
-import React from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Heart, Share2 } from "lucide-react";
-import Image from "next/image";
+import NFTCard from "../../../components/micro/NftCard";
 
-const NFTCard = ({ nft }) => (
-  <Card className="group overflow-hidden transition-all hover:shadow-lg">
-    <CardHeader className="p-0 relative">
-      <Image
-        src={nft.image}
-        width={400}
-        alt={nft.name}
-        className="w-full aspect-square object-cover transition-transform group-hover:scale-105"
-      />
-      <div className="absolute top-2 right-2">
-        <Badge
-          variant="secondary"
-          className="bg-black/50 text-white backdrop-blur-sm"
-        >
-          {nft.price} ETH
-        </Badge>
-      </div>
-    </CardHeader>
-    <CardContent className="p-4">
-      <h3 className="font-bold text-lg mb-1 truncate">{nft.name}</h3>
-      <p className="text-sm text-gray-500 mb-2">By {nft.creator}</p>
-      <p className="text-sm text-gray-600 line-clamp-2">{nft.description}</p>
-    </CardContent>
-    <CardFooter className="p-4 pt-0 flex justify-between items-center">
-      <div className="flex items-center gap-2">
-        <button className="p-2 hover:bg-gray-100 rounded-full">
-          <Heart className="w-5 h-5 text-gray-600" />
-        </button>
-        <span className="text-sm text-gray-600">{nft.likes}</span>
-      </div>
-      <button className="p-2 hover:bg-gray-100 rounded-full">
-        <Share2 className="w-5 h-5 text-gray-600" />
-      </button>
-    </CardFooter>
-  </Card>
-);
-
-const NFTGrid = () => {
-  // Sample NFT data - replace with your actual data
+export default function Home() {
+  // Sample NFT data
   const nfts = [
     {
       id: 1,
-      name: "Cosmic Dreamer #1",
-      creator: "CryptoArtist",
-      description:
-        "A mesmerizing piece that captures the essence of cosmic dreams and infinite possibilities.",
-      price: 0.5,
-      image: "/1.png",
-      likes: 234,
+      name: "Mohammed Salah #1234",
+      description: "The Egyptian King.",
+      price: "50",
+      image: "/images/4.jpg", // Path to the image
     },
     {
       id: 2,
-      name: "Digital Revolution",
-      creator: "NFTMaster",
-      description:
-        "An abstract representation of the digital age and technological advancement.",
-      price: 1.2,
-      image: "/api/placeholder/400/400",
-      likes: 187,
+      name: "Rafael Leao #4321",
+      description: " The Smiling Portugese Ace.",
+      price: "80",
+      image: "/images/2.png", // Path to the image
     },
     {
       id: 3,
-      name: "Pixel Paradise",
-      creator: "PixelPro",
-      description:
-        "A vibrant pixel art landscape showcasing a beautiful digital paradise.",
-      price: 0.8,
-      image: "/api/placeholder/400/400",
-      likes: 156,
+      name: "CR7 #8765",
+      description: "Ororo The GOAT.",
+      price: "10",
+      image: "/images/5.jpg", // Path to the image
     },
     {
       id: 4,
-      name: "Future Funk",
-      creator: "CyberCreator",
-      description:
-        "A retro-futuristic piece blending nostalgic elements with modern digital art.",
-      price: 2.0,
-      image: "/api/placeholder/400/400",
-      likes: 312,
+      name: "Lionel Messi #8765",
+      description: "Ankara Messi.",
+      price: "10",
+      image: "/images/6.jpg", // Path to the image
     },
+    {
+      id: 5,
+      name: "CR7 #8765",
+      description: "Ororo The GOAT.",
+      price: "10",
+      image: "/images/5.jpg", // Path to the image
+    },
+    {
+      id: 6,
+      name: "Lionel #8765",
+      description: "The Argentinian",
+      price: "10",
+      image: "/images/6.jpg", // Path to the image
+    },
+    {
+      id: 7,
+      name: "CR7 #8765",
+      description: "Ororo The GOAT.",
+      price: "10",
+      image: "/images/3.png", // Path to the image
+    },
+    {
+      id: 8,
+      name: "CR7 #8765",
+      description: "Ororo The GOAT.",
+      price: "10",
+      image: "/images/5.jpg", // Path to the image
+    },
+    // Add more NFTs as needed
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Featured NFTs</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="min-h-screen bg-gray-100 p-8">
+      <h1 className="text-3xl font-bold text-center mb-8">NFT Marketplace</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {nfts.map((nft) => (
           <NFTCard key={nft.id} nft={nft} />
         ))}
       </div>
     </div>
   );
-};
-
-export default NFTGrid;
+}
