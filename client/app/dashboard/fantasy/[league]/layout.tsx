@@ -7,11 +7,14 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const League = ({ children }: { children: React.ReactNode }) => {
+
     const [leagueName, setLeagueName] = useState("");
     const pathname = usePathname();
     const league = pathname.replace("/dashboard/fantasy/", "");
 
-    console.log(league);
+    const [selectedTab, setSelectedTab] = useState(() => {
+        return localStorage.getItem("selectedTab") || "overview";
+    });
 
     useEffect(() => {
         if (league) {
@@ -44,6 +47,12 @@ const League = ({ children }: { children: React.ReactNode }) => {
         };
     }, [league]);
 
+    // New function to handle tab change
+    const handleTabChange = (value: string) => {
+        setSelectedTab(value);
+        localStorage.setItem("selectedTab", value); // Save to local storage
+    };
+
     return (
         <>
             <div className="pt-8 pb-4">
@@ -58,23 +67,33 @@ const League = ({ children }: { children: React.ReactNode }) => {
                 {/*   <TeamDisplay teams={teams} /> */}
             </div>
 
-            <Tabs defaultValue="overview" className="w-full">
+            <Tabs defaultValue={selectedTab} className="w-full">
+
                 <TabsList className="flex items-center gap-4 py-8 w-2/4">
-                    <TabsTrigger className="py-2 px-6" value="overview">
-                        Overview
-                    </TabsTrigger>
-                    <TabsTrigger className="py-2 px-6" value="team">
+
+                    <Link href={'/dashboard/fantasy/scp'}>
+                        <TabsTrigger className="py-2 px-6" value="overview" onClick={() => handleTabChange("overview")}>
+                            Overview
+                        </TabsTrigger>
+                    </Link>
+
+                    <TabsTrigger className="py-2 px-6" value="team" onClick={() => handleTabChange("team")}>
                         My team
                     </TabsTrigger>
-                    <TabsTrigger className="py-2 px-6" value="matches">
+
+                    <TabsTrigger className="py-2 px-6" value="matches" onClick={() => handleTabChange("matches")}>
                         Matches
                     </TabsTrigger>
-                    <TabsTrigger className="py-2 px-6" value="leagues">
-                        Leagues
-                    </TabsTrigger>
+
+                    <Link href={'/dashboard/fantasy/scp/userleagues'}>
+                        <TabsTrigger className="py-2 px-6" value="leagues" onClick={() => handleTabChange("leagues")}>
+                            Leagues
+                        </TabsTrigger>
+                    </Link>
+
                 </TabsList>
 
-                
+
                 {children}
             </Tabs>
         </>
