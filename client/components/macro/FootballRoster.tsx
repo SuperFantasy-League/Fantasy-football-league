@@ -1,10 +1,10 @@
 import React from "react";
-import Image from "next/image";
+//import Image from "next/image";
 import { Search } from "lucide-react";
 import PlayerSlot from "../micro/PlayerSlot";
 
 const FootballRoster = () => {
-  const players = [
+  /* const players = [
     {
       name: "Onana",
       team: "MUN",
@@ -18,8 +18,8 @@ const FootballRoster = () => {
       position: "GKP",
       cost: 4.7,
       points: 50,
-    },
-  ];
+    }, 
+  ];*/
 
   return (
     <>

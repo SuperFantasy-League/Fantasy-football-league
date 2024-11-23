@@ -1,18 +1,14 @@
-export interface AllTeams {
+// ../types/team.ts
+export interface Team {
   id: string;
-  // Add other team properties based on your API response
-  // For example:
-  name?: string;
-  members?: number;
-  // ... other properties
+  name: string;
+  // Other properties related to the team
 }
 
 export interface TeamResponse {
   data: {
     response: {
-      data: AllTeams[];
+      data: Team[]; // Array of Team objects
     };
   };
 }
-
-// hooks/useTeams.ts
