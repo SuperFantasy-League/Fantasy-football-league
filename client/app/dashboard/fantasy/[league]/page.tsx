@@ -1,11 +1,12 @@
 "use client";
 
-import FootballField from "@/components/macro/FootballField";
-import FootballRoster from "@/components/macro/FootballRoster";
+import FantasyFootball from "@/components/macro/FantasyFootball";
+//import FootballField from "@/components/macro/FootballField";
+//import FootballRoster from "@/components/macro/FootballRoster";
+//import PremierLeagueTeams from "@/components/micro/PlayerAccordion";
 import { TabsContent } from "@/components/ui/tabs";
 
 const League = () => {
-
   return (
     <>
       <TabsContent value="overview">
@@ -27,9 +28,10 @@ const League = () => {
           </button>
         </div>
 
-        <div className="flex justify-between gap-4 pb-10">
-          <FootballField />
-          <FootballRoster />
+        <div>
+          <FantasyFootball />
+          {/* <FootballField />
+          <PremierLeagueTeams /> */}
         </div>
       </TabsContent>
     </>
