@@ -41,9 +41,9 @@ const League = ({ children }: { children: React.ReactNode }) => {
       }
     }
 
-    return () => {
-      setLeagueName("");
-    };
+    // return () => {
+    //     setLeagueName("");
+    // };
   }, [league]);
 
   // New function to handle tab change
@@ -94,7 +94,7 @@ const League = ({ children }: { children: React.ReactNode }) => {
             Matches
           </TabsTrigger>
 
-          <Link href={"/dashboard/fantasy/scp/userleagues"}>
+          <Link href={`/${pathname.split("/").slice(1).join("/")}/userleagues`}>
             <TabsTrigger
               className="py-2 px-6"
               value="leagues"

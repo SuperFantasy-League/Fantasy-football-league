@@ -13,7 +13,7 @@ const page = () => {
                     height={250}
                 />
                 <p className="text-3xl fo tracking-tighter">
-                    Betting is Unavailable at this time, <br /> check out the faantasy Page
+                    Wallet is Unavailable at this time, <br /> check out the fantasy Page
                 </p>
                 <Link href={'/fantasy'}>
                     <Button className="w-32 h-10">

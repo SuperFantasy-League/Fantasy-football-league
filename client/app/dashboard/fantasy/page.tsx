@@ -1,9 +1,14 @@
 "use client";
-import React from "react";
+import { useState } from "react";
 import Image from "next/image";
 import ProceedButton from "@/components/micro/ProceedButton";
 
 const CompetitionSelector = () => {
+
+  const [selectedTab] = useState(() => {
+    return localStorage.getItem("selectedTab") || "overview";
+  });
+
   const competitions = [
     {
       name: "English Premier League",
@@ -66,7 +71,12 @@ const CompetitionSelector = () => {
                   </h3>
                   <div className="w-2/4">
                     <ProceedButton
-                      path={`/dashboard/fantasy/${competition.id}`}
+                      path={
+                        selectedTab === "leagues" ? `/dashboard/fantasy/${competition.id}/userleagues` : 
+                        selectedTab === "team" ? `/dashboard/fantasy/${competition.id}/userteam` : 
+                        selectedTab === "matches" ? `/dashboard/fantasy/${competition.id}/usermatches` : 
+                        `/dashboard/fantasy/${competition.id}`
+                      }
                     />
                   </div>
                 </div>
