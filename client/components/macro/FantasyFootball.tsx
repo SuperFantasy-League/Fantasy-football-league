@@ -20,10 +20,10 @@ import { Button } from "@/components/ui/button";
 // Main Component
 const FantasyFootball = () => {
   const [selectedPlayers, setSelectedPlayers] = useState({
-    goalkeepers: ["", ""],
-    defenders: ["", "", "", "", ""],
-    midfielders: ["", "", "", "", ""],
-    forwards: ["", "", ""],
+    Goalkeeper: ["", ""],
+    Defender: ["", "", "", "", ""],
+    Midfielder: ["", "", "", "", ""],
+    Attacker: ["", "", ""],
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -308,11 +308,11 @@ const FantasyFootball = () => {
 
             {/* Goalkeepers */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-20 gap-16">
-              {selectedPlayers.goalkeepers.map((player, index) => (
+              {selectedPlayers.Goalkeeper.map((player, index) => (
                 <div
                   key={index}
                   onClick={() =>
-                    handlePlayerSelection(null, "goalkeepers", index)
+                    handlePlayerSelection(null, "Goalkeeper", index)
                   }
                 >
                   <PlayerCard role="GoalKeeper" playerName={player} />
@@ -322,11 +322,11 @@ const FantasyFootball = () => {
 
             {/* Defenders */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-64 gap-12">
-              {selectedPlayers.defenders.map((player, index) => (
+              {selectedPlayers.Defender.map((player, index) => (
                 <div
                   key={index}
                   onClick={() =>
-                    handlePlayerSelection(null, "defenders", index)
+                    handlePlayerSelection(null, "Defender", index)
                   }
                 >
                   <PlayerCard role="Defender" playerName={player} />
@@ -336,11 +336,11 @@ const FantasyFootball = () => {
 
             {/* Midfielders */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-[455px] gap-12">
-              {selectedPlayers.midfielders.map((player, index) => (
+              {selectedPlayers.Midfielder.map((player, index) => (
                 <div
                   key={index}
                   onClick={() =>
-                    handlePlayerSelection(null, "midfielders", index)
+                    handlePlayerSelection(null, "Midfielder", index)
                   }
                 >
                   <PlayerCard role="Midfielder" playerName={player} />
@@ -350,12 +350,12 @@ const FantasyFootball = () => {
 
             {/* Forwards */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-[648px] gap-12">
-              {selectedPlayers.forwards.map((player, index) => (
+              {selectedPlayers.Attacker.map((player, index) => (
                 <div
                   key={index}
-                  onClick={() => handlePlayerSelection(null, "forwards", index)}
+                  onClick={() => handlePlayerSelection(null, "Attacker", index)}
                 >
-                  <PlayerCard role="Forward" playerName={player} />
+                  <PlayerCard role="Attacker" playerName={player} />
                 </div>
               ))}
             </div>
@@ -448,24 +448,6 @@ const FantasyFootball = () => {
                                 <span className="ml-4">{cur.player.name}</span>
                               </h3>
 
-                              {/* <ul className="space-y-2">
-                                {playerz.map((cur:any, idxx:number) => (
-                                  <li
-                                    key={idxx}
-                                    className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
-                                    onClick={() =>
-                                      handlePlayerSelection(
-                                        cur.player.name,
-                                        cur.statistics.games.position,
-                                        selectedPlayers[position].indexOf("")
-                                      )
-                                    }
-                                  >
-                                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                    <span>{cur.player.name}</span>
-                                  </li>
-                                ))}
-                              </ul> */}
                             </div>
                           ))
                         )
