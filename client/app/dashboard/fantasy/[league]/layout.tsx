@@ -1,5 +1,4 @@
 "use client";
-
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,7 +11,7 @@ const League = ({ children }: { children: React.ReactNode }) => {
   const league = pathname.replace("/dashboard/fantasy/", "");
 
   const [selectedTab, setSelectedTab] = useState(() => {
-    return localStorage.getItem("selectedTab") || "overview";
+    return localStorage?.getItem("selectedTab") || "overview";
   });
   // fantasy / scp / userleagues;
   useEffect(() => {
@@ -49,7 +48,7 @@ const League = ({ children }: { children: React.ReactNode }) => {
   // New function to handle tab change
   const handleTabChange = (value: string) => {
     setSelectedTab(value);
-    localStorage.setItem("selectedTab", value); // Save to local storage
+    localStorage?.setItem("selectedTab", value); // Save to local storage
   };
 
   return (

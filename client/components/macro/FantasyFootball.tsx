@@ -1,4 +1,4 @@
-"use-client";
+"use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import PlayerCard from "../micro/PlayerCard";
 import { Button } from "@/components/ui/button";
+import Fixtures from "./Fixtures";
 
 // Main Component
 const FantasyFootball = () => {
@@ -27,7 +28,7 @@ const FantasyFootball = () => {
     Attacker: ["", "", ""],
   });
 
-  const [roster, setRoster] = useState<any>([])
+  const [roster, setRoster] = useState<any>([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTeamNameModalOpen, setIsTeamNameModalOpen] = useState(false); // Modal for team name input
@@ -39,19 +40,27 @@ const FantasyFootball = () => {
   const [teams, setteams] = useState<any>([]);
   const [players, setplayers] = useState<any>([]);
 
-  const handlePlayerSelection = (player: any, position: any, index: any) => {
-    console.log({ player, position, index });
-    setSelectedPlayer(player);
+  const handlePlayerSelection = (
+    id: any,
+    player: any,
+    position: any,
+    index: any
+  ) => {
+    console.log({ id, player, position, index });
+    const newPlayer = { id, player };
+    setSelectedPlayer(newPlayer);
     setSelectedPosition(position);
     setSelectedIndex(index);
     setIsModalOpen(true);
   };
 
   const confirmPlayerSelection = () => {
-    if (selectedPosition && selectedPlayer) {
+    if (selectedPosition && selectedPlayer.id) {
       setSelectedPlayers((prev) => {
         const newPlayers = { ...prev };
+        console.log({ newPlayers });
         newPlayers[selectedPosition][selectedIndex] = selectedPlayer;
+        console.log({ newPlayers });
         return newPlayers;
       });
       setIsModalOpen(false);
@@ -62,51 +71,49 @@ const FantasyFootball = () => {
     setIsTeamNameModalOpen(true);
   };
 
-  const uploadRoster = async(data:any) => {
-    console.log("loading roster...")
+  const uploadRoster = async (data: any) => {
+    console.log("loading roster...");
     try {
-      let res:any = await fetch(
+      let res: any = await fetch(
         `https://node-backend-7sxv.onrender.com/api/users/upload-roster`,
         {
           method: "PATCH",
-          headers:{
-            "content-type": "application/json"
+          headers: {
+            "content-type": "application/json",
           },
-          body:JSON.stringify(data)
+          body: JSON.stringify(data),
         }
-      )
+      );
 
-      console.log("done loading")
+      console.log("done loading");
 
-      res = await res.json()
+      res = await res.json();
 
-      console.log("UPLOADED ROSTER ", res)
-      
+      console.log("UPLOADED ROSTER ", res);
     } catch (error) {
-      console.log("done loading")
-      console.log("upload roster error ", error)
+      console.log("done loading");
+      console.log("upload roster error ", error);
     }
-  }
+  };
 
-  const addToRoster = (data:any) => {
-
-    let arr1:any = roster;
+  const addToRoster = (data: any) => {
+    let arr1: any = roster;
 
     arr1.push(data);
 
     setRoster(arr1);
+  };
 
-  }
-
-  const handleTeamNameSubmit = () => {
+  /* const handleTeamNameSubmit = () => {
     if (teamName) {
       // Combine the selected players and team name and save the data
+
       const newTeam = {
         name: teamName,
         players: selectedPlayers,
       };
 
-      console.log("roster ", roster)
+      console.log("roster ", roster);
 
       // Store the team data
       setSavedTeam(newTeam);
@@ -114,8 +121,8 @@ const FantasyFootball = () => {
       uploadRoster({
         address: "0xfE8ca1261f853330298FF34d0ce07ca0d63Ca0a1",
         rosterName: teamName,
-        roster
-      })
+        roster,
+      });
 
       // Log the selected team data to the console
       console.log("Saved Team:", newTeam);
@@ -124,6 +131,82 @@ const FantasyFootball = () => {
       alert(`Team ${teamName} has been saved!`); // Optional: Show a confirmation message
     } else {
       alert("Please enter a team name.");
+    }
+  }; */
+
+  const handleTeamNameSubmit = async () => {
+    if (teamName) {
+      try {
+        // Extract player IDs from selectedPlayers
+        console.log(selectedPlayers);
+        //@ts-ignore
+        const filteredPlayer = Object.values(selectedPlayers)
+          .flat()
+          .filter((player) => player !== "");
+        console.log({ filteredPlayer });
+        // Filter out empty slots
+        const playerIds = filteredPlayer.map((player) => player.id); // Match and get IDs
+
+        console.log({ playerIds });
+
+        if (!playerIds.length) {
+          alert("Please add players to your team.");
+          return;
+        }
+
+        // Save to blockchain
+        await uploadToBlockchain(teamName, playerIds);
+
+        // Save to backend
+        const newTeam = {
+          name: teamName,
+          players: selectedPlayers,
+        };
+
+        uploadRoster({
+          address: "0xfE8ca1261f853330298FF34d0ce07ca0d63Ca0a1",
+          rosterName: teamName,
+          roster: playerIds, // Include player IDs
+        });
+
+        console.log("Saved Team:", newTeam);
+        setIsTeamNameModalOpen(false);
+        alert(`Team ${teamName} has been saved!`);
+      } catch (error) {
+        console.error("Error saving team:", error);
+        alert("Failed to save the team.");
+      }
+    } else {
+      alert("Please enter a team name.");
+    }
+  };
+
+  const uploadToBlockchain = async (teamName, playerIds) => {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum); // Use Metamask
+      const signer = provider.getSigner();
+
+      // Replace with your contract's address and ABI
+      const contractAddress = "0xYourSmartContractAddress";
+      const contractABI = [
+        // Replace this with your contract's ABI
+        "function uploadRoster(string teamName, uint256[] playerIds) public",
+      ];
+
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+
+      console.log("Uploading to blockchain...");
+      const tx = await contract.uploadRoster(teamName, playerIds);
+      await tx.wait(); // Wait for transaction confirmation
+      console.log("Transaction confirmed:", tx);
+      alert(`Roster uploaded to blockchain! Transaction hash: ${tx.hash}`);
+    } catch (error) {
+      console.error("Blockchain upload failed:", error);
+      alert("Failed to upload roster to blockchain.");
     }
   };
 
@@ -144,11 +227,11 @@ const FantasyFootball = () => {
 
       res = await res.json();
 
-      console.log("team ", res.data.response);
+      console.log("players ", res.data.response);
       setplayers(res.data.response);
     } catch (error) {
       console.log("done loading");
-      console.log("fetch team error ", error);
+      console.log("fetch players error ", error);
     }
   };
 
@@ -202,7 +285,11 @@ const FantasyFootball = () => {
                     handlePlayerSelection(null, "Goalkeeper", index)
                   }
                 >
-                  <PlayerCard role="GoalKeeper" playerName={player} />
+                  <PlayerCard
+                    role="GoalKeeper"
+                    playerName={player?.player}
+                    jerseyImage={""}
+                  />
                 </div>
               ))}
             </div>
@@ -214,7 +301,11 @@ const FantasyFootball = () => {
                   key={index}
                   onClick={() => handlePlayerSelection(null, "Defender", index)}
                 >
-                  <PlayerCard role="Defender" playerName={player} />
+                  <PlayerCard
+                    role="Defender"
+                    playerName={player?.player}
+                    jerseyImage={""}
+                  />
                 </div>
               ))}
             </div>
@@ -228,7 +319,11 @@ const FantasyFootball = () => {
                     handlePlayerSelection(null, "Midfielder", index)
                   }
                 >
-                  <PlayerCard role="Midfielder" playerName={player} />
+                  <PlayerCard
+                    role="Midfielder"
+                    playerName={player?.player}
+                    jerseyImage={""}
+                  />
                 </div>
               ))}
             </div>
@@ -240,19 +335,24 @@ const FantasyFootball = () => {
                   key={index}
                   onClick={() => handlePlayerSelection(null, "Attacker", index)}
                 >
-                  <PlayerCard role="Attacker" playerName={player} />
+                  <PlayerCard
+                    role="Attacker"
+                    playerName={player?.player}
+                    jerseyImage={""}
+                  />
                 </div>
               ))}
             </div>
           </div>
           <div className=" flex item-center justify-center">
             <Button
-              className="w-1/3 mt-12 h-12"
+              className="w-1/3 mt-12 mb-12 h-12"
               onClick={handleSaveButtonClick}
             >
               Save
             </Button>
           </div>
+          <Fixtures />
         </div>
 
         <div
@@ -360,6 +460,7 @@ const FantasyFootball = () => {
                             className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
                             onClick={() =>
                               handlePlayerSelection(
+                                cur.player.id,
                                 cur.player.name,
                                 cur.statistics[0].games.position,
                                 selectedPlayers[
@@ -390,7 +491,7 @@ const FantasyFootball = () => {
             <DialogHeader>
               <DialogTitle>Add Player</DialogTitle>
               <DialogDescription>
-                Add {selectedPlayer} to your team as {selectedPosition}?
+                Add {selectedPlayer?.player} to your team as {selectedPosition}?
               </DialogDescription>
             </DialogHeader>
             <DialogFooter className="sm:justify-start">
