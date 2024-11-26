@@ -35,7 +35,7 @@ const FantasyFootball = () => {
   const [teamName, setTeamName] = useState("");
   const [savedTeam, setSavedTeam] = useState<any>(null);
   const [teams, setteams] = useState<any>([]);
-  const [playerz, setPlayerz] = useState<any>([]);
+  const [players, setplayers] = useState<any>([]);
 
   const handlePlayerSelection = (player: any, position: any, index: any) => {
     console.log({ player, position, index });
@@ -99,7 +99,7 @@ const FantasyFootball = () => {
       res = await res.json();
 
       console.log("team ", res.data.response);
-      setPlayerz(res.data.response);
+      setplayers(res.data.response);
     } catch (error) {
       console.log("done loading");
       console.log("fetch team error ", error);
@@ -200,7 +200,10 @@ const FantasyFootball = () => {
             </div>
           </div>
           <div className=" flex item-center justify-center">
-            <Button className="w-1/3 mt-5 h-12" onClick={handleSaveButtonClick}>
+            <Button
+              className="w-1/3 mt-12 h-12"
+              onClick={handleSaveButtonClick}
+            >
               Save
             </Button>
           </div>
@@ -286,13 +289,13 @@ const FantasyFootball = () => {
                     <div className="flex items-center space-x-3">
                       {cur.logo && (
                         <div className="relative w-8 h-8 flex-shrink-0">
-                          {/*     <Image
+                          <Image
                             src={cur.logo}
                             alt={`${cur.name} logo`}
                             fill
                             className="object-contain"
                             sizes="32px"
-                          /> */}
+                          />
                         </div>
                       )}
                       <span className="font-semibold">{cur.name}</span>
@@ -300,12 +303,12 @@ const FantasyFootball = () => {
                   </AccordionTrigger>
 
                   <AccordionContent className="px-4">
-                    {playerz.length === 0 ? (
+                    {players.length === 0 ? (
                       <div className="py-2 text-gray-500">
                         Loading players...
                       </div>
                     ) : (
-                      playerz.map((cur: any, id: number) => (
+                      players.map((cur: any, id: number) => (
                         <div key={id} className="mb-4">
                           <div
                             className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
