@@ -78,13 +78,15 @@ const League = ({ children }: { children: React.ReactNode }) => {
             </TabsTrigger>
           </Link>
 
-          <TabsTrigger
-            className="py-2 px-6"
-            value="team"
-            onClick={() => handleTabChange("team")}
-          >
-            My team
-          </TabsTrigger>
+          <Link href={`/${pathname.split("/").slice(1).join("/")}/userteam`}>
+            <TabsTrigger
+              className="py-2 px-6"
+              value="team"
+              onClick={() => handleTabChange("team")}
+            >
+              My team
+            </TabsTrigger>
+          </Link>
 
           <TabsTrigger
             className="py-2 px-6"
