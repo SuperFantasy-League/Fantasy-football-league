@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Accordion,
@@ -20,19 +20,21 @@ import { Button } from "@/components/ui/button";
 // Main Component
 const FantasyFootball = () => {
   const [selectedPlayers, setSelectedPlayers] = useState({
-    goalkeepers: ["", ""],
-    defenders: ["", "", "", "", ""],
-    midfielders: ["", "", "", "", ""],
-    forwards: ["", "", ""],
+    Goalkeeper: ["", ""],
+    Defender: ["", "", "", "", ""],
+    Midfielder: ["", "", "", "", ""],
+    Attacker: ["", "", ""],
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTeamNameModalOpen, setIsTeamNameModalOpen] = useState(false); // Modal for team name input
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [selectedPosition, setSelectedPosition] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState<any>(null);
   const [teamName, setTeamName] = useState("");
-  const [savedTeam, setSavedTeam] = useState(null);
+  const [savedTeam, setSavedTeam] = useState<any>(null);
+  const [teamz, setTeamz] = useState<any>([])
+  const [playerz, setPlayerz] = useState<any>([])
 
   const teams = [
     {
@@ -194,7 +196,8 @@ const FantasyFootball = () => {
     // Add more teams as needed
   ];
 
-  const handlePlayerSelection = (player, position, index) => {
+  const handlePlayerSelection = (player:any, position:any, index:any) => {
+    console.log({player, position, index})
     setSelectedPlayer(player);
     setSelectedPosition(position);
     setSelectedIndex(index);
@@ -237,6 +240,60 @@ const FantasyFootball = () => {
     }
   };
 
+  const getPlayers = async(id:string) => {
+    console.log("loading...")
+    try {
+      let res:any = await fetch(
+        `https://node-backend-7sxv.onrender.com/api/teams/get-team/${id}`,
+        {
+          method: "GET",
+          headers:{
+            "content-type": "application/json"
+          }
+        }
+      )
+
+      console.log("done loading")
+
+      res = await res.json()
+
+      console.log("team ", res.data.response)
+      setPlayerz(res.data.response)
+    } catch (error) {
+      console.log("done loading")
+      console.log("fetch team error ", error)
+    }
+  }
+
+  const getTeams = async() => {
+    console.log("loading...")
+    try {
+      let res:any = await fetch(
+        `https://node-backend-7sxv.onrender.com/api/teams/get-teams`,
+        {
+          method: "GET",
+          headers:{
+            "content-type": "application/json"
+          }
+        }
+      )
+
+      console.log("done loading")
+
+      res = await res.json()
+
+      console.log("teams ", res.data.response)
+      setTeamz(res.data.response)
+    } catch (error) {
+      console.log("done loading")
+      console.log("get teams error ", error)
+    }
+  }
+
+  useEffect(() => {
+    getTeams()
+  }, [])
+
   return (
     <div>
       <div className="flex">
@@ -251,11 +308,11 @@ const FantasyFootball = () => {
 
             {/* Goalkeepers */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-20 gap-16">
-              {selectedPlayers.goalkeepers.map((player, index) => (
+              {selectedPlayers.Goalkeeper.map((player, index) => (
                 <div
                   key={index}
                   onClick={() =>
-                    handlePlayerSelection(null, "goalkeepers", index)
+                    handlePlayerSelection(null, "Goalkeeper", index)
                   }
                 >
                   <PlayerCard role="GoalKeeper" playerName={player} />
@@ -265,11 +322,11 @@ const FantasyFootball = () => {
 
             {/* Defenders */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-64 gap-12">
-              {selectedPlayers.defenders.map((player, index) => (
+              {selectedPlayers.Defender.map((player, index) => (
                 <div
                   key={index}
                   onClick={() =>
-                    handlePlayerSelection(null, "defenders", index)
+                    handlePlayerSelection(null, "Defender", index)
                   }
                 >
                   <PlayerCard role="Defender" playerName={player} />
@@ -279,11 +336,11 @@ const FantasyFootball = () => {
 
             {/* Midfielders */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-[455px] gap-12">
-              {selectedPlayers.midfielders.map((player, index) => (
+              {selectedPlayers.Midfielder.map((player, index) => (
                 <div
                   key={index}
                   onClick={() =>
-                    handlePlayerSelection(null, "midfielders", index)
+                    handlePlayerSelection(null, "Midfielder", index)
                   }
                 >
                   <PlayerCard role="Midfielder" playerName={player} />
@@ -293,12 +350,12 @@ const FantasyFootball = () => {
 
             {/* Forwards */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-[648px] gap-12">
-              {selectedPlayers.forwards.map((player, index) => (
+              {selectedPlayers.Attacker.map((player, index) => (
                 <div
                   key={index}
-                  onClick={() => handlePlayerSelection(null, "forwards", index)}
+                  onClick={() => handlePlayerSelection(null, "Attacker", index)}
                 >
-                  <PlayerCard role="Forward" playerName={player} />
+                  <PlayerCard role="Attacker" playerName={player} />
                 </div>
               ))}
             </div>
@@ -320,7 +377,7 @@ const FantasyFootball = () => {
             </h1>
           </div>
           <h2 className="text-2xl font-bold mb-4"></h2>
-          <Accordion type="single" collapsible className="w-full">
+          {/* <Accordion type="single" collapsible className="w-full">
             {teams.map((team, teamIndex) => (
               <AccordionItem key={teamIndex} value={`item-${teamIndex}`}>
                 <AccordionTrigger className="flex items-center justify-between p-4 hover:bg-gray-100 rounded-lg">
@@ -355,6 +412,52 @@ const FantasyFootball = () => {
                 </AccordionContent>
               </AccordionItem>
             ))}
+          </Accordion> */}
+          <Accordion type="single" collapsible className="w-full">
+            {
+              teamz.length === 0 ? (
+                <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                </svg>
+              ) : (
+                teamz.map((cur:any, idx:number) => (
+                  <AccordionItem key={idx} value={cur.name}>
+
+                    <AccordionTrigger onClick={() => getPlayers(cur.team_id)} className="flex items-center justify-between p-4 hover:bg-gray-100 rounded-lg">
+                      <span className="font-semibold">{cur.name}</span>
+                    </AccordionTrigger>
+
+                    <AccordionContent>
+                      {
+                        playerz.length === 0 ? (
+                          null
+                        ) : (
+                          playerz.map((cur:any, id:number) => (
+                            <div key={id} className="mb-4 pl-4">
+                              <h3 
+                                className="font-semibold capitalize mb-2 cursor-pointer"
+                                onClick={() =>
+                                  handlePlayerSelection(
+                                    cur.player.name,
+                                    cur.statistics[0].games.position,
+                                    selectedPlayers[cur.statistics[0].games.position].indexOf("")
+                                  )
+                                }
+                              >
+                                {cur.statistics[0].games.position}
+
+                                <span className="ml-4">{cur.player.name}</span>
+                              </h3>
+
+                            </div>
+                          ))
+                        )
+                      }
+                    </AccordionContent>
+
+                  </AccordionItem>
+                )
+              ))
+            }
           </Accordion>
         </div>
         {/* Selection Modal */}
