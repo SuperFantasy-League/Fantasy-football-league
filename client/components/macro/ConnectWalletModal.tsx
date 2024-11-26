@@ -33,8 +33,8 @@ const ConnectWalletModal = () => {
                                     width={80}
                                     height={80}
                                 />
-                                <p className="text-3xl fo tracking-tighter">
-                                    Wallet is Unavailable at this time, <br /> check out the fantasy Page
+                                <p className="text-3xl text-center tracking-tighter">
+                                    Wallet not detected, <br /> please connect a wallet to continue enjoying AceFantasy
                                 </p>
                                 <ConnectWallet />
                             </div>

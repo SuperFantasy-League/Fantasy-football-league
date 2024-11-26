@@ -2,6 +2,8 @@
 import { PointsChart } from "@/components/macro/PointsChart";
 import RecentTx from "@/components/macro/RecentTx";
 import GameBreakdown from "@/components/micro/GameBreakdown";
+import UserBalanceCard from "@/components/micro/UserBalanceCard";
+import UserLeaguesCard from "@/components/micro/UserLeaguesCard";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { useActiveAccount } from "thirdweb/react";
@@ -12,7 +14,7 @@ export default function Page() {
     <main className="space-y-8">
       <div className="w-full mt-5 pt-4 pb-9 border-b">
         <div className="grid grid-cols-3 gap-5 items-center w-full">
-          <Card className="flex flex-col items-start gap-3 p-4 shadow-md">
+          {/* <Card className="flex flex-col items-start gap-3 p-4 shadow-md">
             <p className="text-xs font-medium text-gray-600">My Leagues</p>
             {
               account ? <p className="text-2xl font-medium inline-flex gap-2 items-center">
@@ -24,8 +26,8 @@ export default function Page() {
                   <small className="bg-blue-300/50 px-2 py-1 rounded-3xl text-xs text-blue-800">0% owned</small>
                 </p>
             }
-
-          </Card>
+          </Card> */}
+          <UserLeaguesCard />
           <Card className="flex flex-col items-start gap-3 p-4 shadow-md">
             <p className="text-xs font-medium text-gray-600">Current Season Points</p>
             {
@@ -62,31 +64,7 @@ export default function Page() {
 
       <div className="grid grid-cols-3 gap-3">
 
-        <div className="flex flex-col items-start gap-2 p-4 mt-4">
-          <p className="text-xs font-medium text-gray-600">Wallet Balance 💳</p>
-          {
-            account ?
-              <p className="text-4xl font-semibold inline-flex items-center gap-2">
-                $638
-                <small className="text-xs text-muted-foreground">
-                  <span className="bg-green-200/30 px-2 py-1 rounded-3xl text-xs text-green-800 mr-1 font-normal">
-                    +2.5%
-                  </span>
-                  vs last week
-                </small>
-              </p>
-              :
-              <p className="text-4xl font-semibold inline-flex items-center gap-2">
-                $0
-                <small className="text-xs text-muted-foreground">
-                  <span className="bg-green-200/30 px-2 py-1 rounded-3xl text-xs text-green-800 mr-1 font-normal">
-                    --%
-                  </span>
-                  vs last week
-                </small>
-              </p>
-          }
-        </div>
+        <UserBalanceCard />
 
         {
           account ?
