@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Accordion,
@@ -30,9 +30,11 @@ const FantasyFootball = () => {
   const [isTeamNameModalOpen, setIsTeamNameModalOpen] = useState(false); // Modal for team name input
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [selectedPosition, setSelectedPosition] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState<any>(null);
   const [teamName, setTeamName] = useState("");
-  const [savedTeam, setSavedTeam] = useState(null);
+  const [savedTeam, setSavedTeam] = useState<any>(null);
+  const [teamz, setTeamz] = useState<any>([])
+  const [playerz, setPlayerz] = useState<any>([])
 
   const teams = [
     {
@@ -194,7 +196,7 @@ const FantasyFootball = () => {
     // Add more teams as needed
   ];
 
-  const handlePlayerSelection = (player, position, index) => {
+  const handlePlayerSelection = (player:any, position:any, index:any) => {
     setSelectedPlayer(player);
     setSelectedPosition(position);
     setSelectedIndex(index);
@@ -236,6 +238,60 @@ const FantasyFootball = () => {
       alert("Please enter a team name.");
     }
   };
+
+  const getPlayers = async(id:string) => {
+    console.log("loading...")
+    try {
+      let res:any = await fetch(
+        `https://node-backend-7sxv.onrender.com/api/teams/get-team/${id}`,
+        {
+          method: "GET",
+          headers:{
+            "content-type": "application/json"
+          }
+        }
+      )
+
+      console.log("done loading")
+
+      res = await res.json()
+
+      console.log("team ", res.data.response)
+      setPlayerz(res.data.response)
+    } catch (error) {
+      console.log("done loading")
+      console.log("fetch team error ", error)
+    }
+  }
+
+  const getTeams = async() => {
+    console.log("loading...")
+    try {
+      let res:any = await fetch(
+        `https://node-backend-7sxv.onrender.com/api/teams/get-teams`,
+        {
+          method: "GET",
+          headers:{
+            "content-type": "application/json"
+          }
+        }
+      )
+
+      console.log("done loading")
+
+      res = await res.json()
+
+      console.log("teams ", res.data.response)
+      setTeamz(res.data.response)
+    } catch (error) {
+      console.log("done loading")
+      console.log("get teams error ", error)
+    }
+  }
+
+  useEffect(() => {
+    getTeams()
+  }, [])
 
   return (
     <div>
@@ -320,7 +376,7 @@ const FantasyFootball = () => {
             </h1>
           </div>
           <h2 className="text-2xl font-bold mb-4"></h2>
-          <Accordion type="single" collapsible className="w-full">
+          {/* <Accordion type="single" collapsible className="w-full">
             {teams.map((team, teamIndex) => (
               <AccordionItem key={teamIndex} value={`item-${teamIndex}`}>
                 <AccordionTrigger className="flex items-center justify-between p-4 hover:bg-gray-100 rounded-lg">
@@ -355,6 +411,69 @@ const FantasyFootball = () => {
                 </AccordionContent>
               </AccordionItem>
             ))}
+          </Accordion> */}
+          <Accordion type="single" collapsible className="w-full">
+            {
+              teamz.length === 0 ? (
+                null
+              ) : (
+                teamz.map((cur:any, idx:number) => (
+                  <AccordionItem key={idx} value={cur.name}>
+
+                    <AccordionTrigger onClick={() => getPlayers(cur.team_id)} className="flex items-center justify-between p-4 hover:bg-gray-100 rounded-lg">
+                      <span className="font-semibold">{cur.name}</span>
+                    </AccordionTrigger>
+
+                    <AccordionContent>
+                      {
+                        playerz.length === 0 ? (
+                          null
+                        ) : (
+                          playerz.map((cur:any, id:number) => (
+                            <div key={id} className="mb-4 pl-4">
+                              <h3 
+                                className="font-semibold capitalize mb-2"
+                                onClick={() =>
+                                  handlePlayerSelection(
+                                    cur.player.name,
+                                    cur.statistics.games.position,
+                                    selectedPlayers[position].indexOf("")
+                                  )
+                                }
+                              >
+                                {cur.statistics[0].games.position}
+
+                                <span className="ml-4">{cur.player.name}</span>
+                              </h3>
+
+                              {/* <ul className="space-y-2">
+                                {playerz.map((cur:any, idxx:number) => (
+                                  <li
+                                    key={idxx}
+                                    className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
+                                    onClick={() =>
+                                      handlePlayerSelection(
+                                        cur.player.name,
+                                        cur.statistics.games.position,
+                                        selectedPlayers[position].indexOf("")
+                                      )
+                                    }
+                                  >
+                                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                    <span>{cur.player.name}</span>
+                                  </li>
+                                ))}
+                              </ul> */}
+                            </div>
+                          ))
+                        )
+                      }
+                    </AccordionContent>
+
+                  </AccordionItem>
+                )
+              ))
+            }
           </Accordion>
         </div>
         {/* Selection Modal */}
