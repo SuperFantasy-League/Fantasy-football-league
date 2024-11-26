@@ -197,6 +197,7 @@ const FantasyFootball = () => {
   ];
 
   const handlePlayerSelection = (player:any, position:any, index:any) => {
+    console.log({player, position, index})
     setSelectedPlayer(player);
     setSelectedPosition(position);
     setSelectedIndex(index);
@@ -415,7 +416,8 @@ const FantasyFootball = () => {
           <Accordion type="single" collapsible className="w-full">
             {
               teamz.length === 0 ? (
-                null
+                <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                </svg>
               ) : (
                 teamz.map((cur:any, idx:number) => (
                   <AccordionItem key={idx} value={cur.name}>
@@ -432,12 +434,12 @@ const FantasyFootball = () => {
                           playerz.map((cur:any, id:number) => (
                             <div key={id} className="mb-4 pl-4">
                               <h3 
-                                className="font-semibold capitalize mb-2"
+                                className="font-semibold capitalize mb-2 cursor-pointer"
                                 onClick={() =>
                                   handlePlayerSelection(
                                     cur.player.name,
-                                    cur.statistics.games.position,
-                                    selectedPlayers[position].indexOf("")
+                                    cur.statistics[0].games.position,
+                                    selectedPlayers[cur.statistics[0].games.position].indexOf("")
                                   )
                                 }
                               >
