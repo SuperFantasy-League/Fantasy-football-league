@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+"use-client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Accordion,
@@ -20,181 +21,26 @@ import { Button } from "@/components/ui/button";
 // Main Component
 const FantasyFootball = () => {
   const [selectedPlayers, setSelectedPlayers] = useState({
-    goalkeepers: ["", ""],
-    defenders: ["", "", "", "", ""],
-    midfielders: ["", "", "", "", ""],
-    forwards: ["", "", ""],
+    Goalkeeper: ["", ""],
+    Defender: ["", "", "", "", ""],
+    Midfielder: ["", "", "", "", ""],
+    Attacker: ["", "", ""],
   });
+
+  const [roster, setRoster] = useState<any>([])
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTeamNameModalOpen, setIsTeamNameModalOpen] = useState(false); // Modal for team name input
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [selectedPosition, setSelectedPosition] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState<any>(null);
   const [teamName, setTeamName] = useState("");
-  const [savedTeam, setSavedTeam] = useState(null);
+  const [savedTeam, setSavedTeam] = useState<any>(null);
+  const [teams, setteams] = useState<any>([]);
+  const [players, setplayers] = useState<any>([]);
 
-  const teams = [
-    {
-      name: "Arsenal",
-      players: {
-        goalkeepers: ["Aaron Ramsdale", "David Raya"],
-        defenders: [
-          "Ben White",
-          "William Saliba",
-          "Gabriel",
-          "Oleksandr Zinchenko",
-          "Takehiro Tomiyasu",
-        ],
-        midfielders: [
-          "Bukayo Saka",
-          "Martin Ødegaard",
-          "Declan Rice",
-          "Kai Havertz",
-          "Jorginho",
-        ],
-        forwards: ["Gabriel Jesus", "Gabriel Martinelli", "Eddie Nketiah"],
-      },
-    },
-    {
-      name: "Manchester City",
-      players: {
-        goalkeepers: ["Ederson", "Stefan Ortega"],
-        defenders: [
-          "Kyle Walker",
-          "Ruben Dias",
-          "John Stones",
-          "Nathan Ake",
-          "Josko Gvardiol",
-        ],
-        midfielders: [
-          "Kevin De Bruyne",
-          "Rodri",
-          "Bernardo Silva",
-          "Phil Foden",
-          "Matheus Nunes",
-        ],
-        forwards: ["Erling Haaland", "Julian Alvarez", "Jeremy Doku"],
-      },
-    },
-    {
-      name: "Manchester United",
-      players: {
-        goalkeepers: ["David de Gea", "Andre Onana"],
-        defenders: [
-          "Aaron Wan-Bissaka",
-          "Raphaël Varane",
-          "Lisandro Martínez",
-          "Luke Shaw",
-          "Tyrell Malacia",
-          "Victor Lindelöf",
-          "Harry Maguire",
-        ],
-        midfielders: [
-          "Casemiro",
-          "Bruno Fernandes",
-          "Christian Eriksen",
-          "Jadon Sancho",
-          "Scott McTominay",
-          "Donny van de Beek",
-        ],
-        forwards: [
-          "Marcus Rashford",
-          "Antony",
-          "Rasmus Højlund",
-          "Wout Weghorst",
-        ],
-      },
-    },
-    {
-      name: "Chelsea",
-      players: {
-        goalkeepers: ["Kepa Arrizabalaga", "Benoît Badiashile"],
-        defenders: [
-          "Reece James",
-          "Thiago Silva",
-          "Ben Chilwell",
-          "Levi Colwill",
-          "Kalidou Koulibaly",
-          "Marc Cucurella",
-        ],
-        midfielders: [
-          "Enzo Fernández",
-          "Mason Mount",
-          "Conor Gallagher",
-          "Raheem Sterling",
-          "Ruben Loftus-Cheek",
-          "Mateo Kovačić",
-        ],
-        forwards: [
-          "Noni Madueke",
-          "Christopher Nkunku",
-          "Mykhailo Mudryk",
-          "Pierre-Emerick Aubameyang",
-        ],
-      },
-    },
-    {
-      name: "Tottenham Hotspur",
-      players: {
-        goalkeepers: ["Hugo Lloris", "Guglielmo Vicario"],
-        defenders: [
-          "Pedro Porro",
-          "Cristian Romero",
-          "Eric Dier",
-          "Ben Davies",
-          "Destiny Udogie",
-          "Micky van de Ven",
-        ],
-        midfielders: [
-          "James Maddison",
-          "Yves Bissouma",
-          "Pape Matar Sarr",
-          "Giovani Lo Celso",
-          "Oliver Skipp",
-        ],
-        forwards: [
-          "Son Heung-min",
-          "Richarlison",
-          "Dejan Kulusevski",
-          "Harry Kane",
-          "Manor Solomon",
-        ],
-      },
-    },
-    {
-      name: "Newcastle United",
-      players: {
-        goalkeepers: ["Nick Pope", "Martin Dúbravka"],
-        defenders: [
-          "Kieran Trippier",
-          "Sven Botman",
-          "Fabian Schär",
-          "Dan Burn",
-          "Matt Targett",
-          "Jamaal Lascelles",
-        ],
-        midfielders: [
-          "Bruno Guimarães",
-          "Sean Longstaff",
-          "Joe Willock",
-          "Anthony Gordon",
-          "Miguel Almirón",
-          "Jonjo Shelvey",
-        ],
-        forwards: [
-          "Alexander Isak",
-          "Callum Wilson",
-          "Anthony Gordon",
-          "Harvey Barnes",
-        ],
-      },
-    },
-
-    // Add more teams as needed
-  ];
-
-  const handlePlayerSelection = (player, position, index) => {
+  const handlePlayerSelection = (player: any, position: any, index: any) => {
+    console.log({ player, position, index });
     setSelectedPlayer(player);
     setSelectedPosition(position);
     setSelectedIndex(index);
@@ -216,6 +62,42 @@ const FantasyFootball = () => {
     setIsTeamNameModalOpen(true);
   };
 
+  const uploadRoster = async(data:any) => {
+    console.log("loading roster...")
+    try {
+      let res:any = await fetch(
+        `https://node-backend-7sxv.onrender.com/api/users/upload-roster`,
+        {
+          method: "PATCH",
+          headers:{
+            "content-type": "application/json"
+          },
+          body:JSON.stringify(data)
+        }
+      )
+
+      console.log("done loading")
+
+      res = await res.json()
+
+      console.log("UPLOADED ROSTER ", res)
+      
+    } catch (error) {
+      console.log("done loading")
+      console.log("upload roster error ", error)
+    }
+  }
+
+  const addToRoster = (data:any) => {
+
+    let arr1:any = roster;
+
+    arr1.push(data);
+
+    setRoster(arr1);
+
+  }
+
   const handleTeamNameSubmit = () => {
     if (teamName) {
       // Combine the selected players and team name and save the data
@@ -224,8 +106,16 @@ const FantasyFootball = () => {
         players: selectedPlayers,
       };
 
+      console.log("roster ", roster)
+
       // Store the team data
       setSavedTeam(newTeam);
+
+      uploadRoster({
+        address: "0xfE8ca1261f853330298FF34d0ce07ca0d63Ca0a1",
+        rosterName: teamName,
+        roster
+      })
 
       // Log the selected team data to the console
       console.log("Saved Team:", newTeam);
@@ -236,6 +126,60 @@ const FantasyFootball = () => {
       alert("Please enter a team name.");
     }
   };
+
+  const getPlayers = async (id: string) => {
+    console.log("loading...");
+    try {
+      let res: any = await fetch(
+        `https://node-backend-7sxv.onrender.com/api/teams/get-team/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+
+      console.log("done loading");
+
+      res = await res.json();
+
+      console.log("team ", res.data.response);
+      setplayers(res.data.response);
+    } catch (error) {
+      console.log("done loading");
+      console.log("fetch team error ", error);
+    }
+  };
+
+  const getTeams = async () => {
+    console.log("loading...");
+    try {
+      let res: any = await fetch(
+        `https://node-backend-7sxv.onrender.com/api/teams/get-teams`,
+        {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+
+      console.log("done loading");
+
+      res = await res.json();
+
+      console.log("teams ", res.data.response);
+      setteams(res.data.response);
+    } catch (error) {
+      console.log("done loading");
+      console.log("get teams error ", error);
+    }
+  };
+
+  useEffect(() => {
+    getTeams();
+  }, []);
 
   return (
     <div>
@@ -251,11 +195,11 @@ const FantasyFootball = () => {
 
             {/* Goalkeepers */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-20 gap-16">
-              {selectedPlayers.goalkeepers.map((player, index) => (
+              {selectedPlayers.Goalkeeper.map((player, index) => (
                 <div
                   key={index}
                   onClick={() =>
-                    handlePlayerSelection(null, "goalkeepers", index)
+                    handlePlayerSelection(null, "Goalkeeper", index)
                   }
                 >
                   <PlayerCard role="GoalKeeper" playerName={player} />
@@ -265,12 +209,10 @@ const FantasyFootball = () => {
 
             {/* Defenders */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-64 gap-12">
-              {selectedPlayers.defenders.map((player, index) => (
+              {selectedPlayers.Defender.map((player, index) => (
                 <div
                   key={index}
-                  onClick={() =>
-                    handlePlayerSelection(null, "defenders", index)
-                  }
+                  onClick={() => handlePlayerSelection(null, "Defender", index)}
                 >
                   <PlayerCard role="Defender" playerName={player} />
                 </div>
@@ -279,11 +221,11 @@ const FantasyFootball = () => {
 
             {/* Midfielders */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-[455px] gap-12">
-              {selectedPlayers.midfielders.map((player, index) => (
+              {selectedPlayers.Midfielder.map((player, index) => (
                 <div
                   key={index}
                   onClick={() =>
-                    handlePlayerSelection(null, "midfielders", index)
+                    handlePlayerSelection(null, "Midfielder", index)
                   }
                 >
                   <PlayerCard role="Midfielder" playerName={player} />
@@ -293,18 +235,21 @@ const FantasyFootball = () => {
 
             {/* Forwards */}
             <div className="absolute h-44 w-1/2 left-1/4 flex justify-center top-[648px] gap-12">
-              {selectedPlayers.forwards.map((player, index) => (
+              {selectedPlayers.Attacker.map((player, index) => (
                 <div
                   key={index}
-                  onClick={() => handlePlayerSelection(null, "forwards", index)}
+                  onClick={() => handlePlayerSelection(null, "Attacker", index)}
                 >
-                  <PlayerCard role="Forward" playerName={player} />
+                  <PlayerCard role="Attacker" playerName={player} />
                 </div>
               ))}
             </div>
           </div>
           <div className=" flex item-center justify-center">
-            <Button className="w-1/3 mt-5 h-12" onClick={handleSaveButtonClick}>
+            <Button
+              className="w-1/3 mt-12 h-12"
+              onClick={handleSaveButtonClick}
+            >
               Save
             </Button>
           </div>
@@ -320,7 +265,7 @@ const FantasyFootball = () => {
             </h1>
           </div>
           <h2 className="text-2xl font-bold mb-4"></h2>
-          <Accordion type="single" collapsible className="w-full">
+          {/* <Accordion type="single" collapsible className="w-full">
             {teams.map((team, teamIndex) => (
               <AccordionItem key={teamIndex} value={`item-${teamIndex}`}>
                 <AccordionTrigger className="flex items-center justify-between p-4 hover:bg-gray-100 rounded-lg">
@@ -355,6 +300,88 @@ const FantasyFootball = () => {
                 </AccordionContent>
               </AccordionItem>
             ))}
+          </Accordion> */}
+          <Accordion type="single" collapsible className="w-full">
+            {teams.length === 0 ? (
+              <div className="flex justify-center p-4">
+                <svg
+                  className="animate-spin h-6 w-6 text-blue-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              </div>
+            ) : (
+              teams.map((cur: any, idx: number) => (
+                <AccordionItem key={idx} value={cur.name}>
+                  <AccordionTrigger
+                    onClick={() => getPlayers(cur.team_id)}
+                    className="flex items-center p-4 hover:bg-gray-100 rounded-lg"
+                  >
+                    <div className="flex items-center space-x-3">
+                      {cur.logo && (
+                        <div className="relative w-8 h-8 flex-shrink-0">
+                          <Image
+                            src={cur.logo}
+                            alt={`${cur.name} logo`}
+                            fill
+                            className="object-contain"
+                            sizes="32px"
+                          />
+                        </div>
+                      )}
+                      <span className="font-semibold">{cur.name}</span>
+                    </div>
+                  </AccordionTrigger>
+
+                  <AccordionContent className="px-4">
+                    {players.length === 0 ? (
+                      <div className="py-2 text-gray-500">
+                        Loading players...
+                      </div>
+                    ) : (
+                      players.map((cur: any, id: number) => (
+                        <div key={id} className="mb-4">
+                          <div
+                            className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                            onClick={() =>
+                              handlePlayerSelection(
+                                cur.player.name,
+                                cur.statistics[0].games.position,
+                                selectedPlayers[
+                                  cur.statistics[0].games.position
+                                ].indexOf("")
+                              )
+                            }
+                          >
+                            <span className="text-sm text-gray-500">
+                              {cur.statistics[0].games.position}
+                            </span>
+                            <span className="font-medium">
+                              {cur.player.name}
+                            </span>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+              ))
+            )}
           </Accordion>
         </div>
         {/* Selection Modal */}
