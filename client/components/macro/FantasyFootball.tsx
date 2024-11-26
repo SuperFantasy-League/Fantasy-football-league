@@ -26,6 +26,8 @@ const FantasyFootball = () => {
     Attacker: ["", "", ""],
   });
 
+  const [roster, setRoster] = useState<any>([])
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTeamNameModalOpen, setIsTeamNameModalOpen] = useState(false); // Modal for team name input
   const [selectedPlayer, setSelectedPlayer] = useState(null);
@@ -219,6 +221,42 @@ const FantasyFootball = () => {
     setIsTeamNameModalOpen(true);
   };
 
+  const uploadRoster = async(data:any) => {
+    console.log("loading roster...")
+    try {
+      let res:any = await fetch(
+        `https://node-backend-7sxv.onrender.com/api/users/upload-roster`,
+        {
+          method: "PATCH",
+          headers:{
+            "content-type": "application/json"
+          },
+          body:JSON.stringify(data)
+        }
+      )
+
+      console.log("done loading")
+
+      res = await res.json()
+
+      console.log("UPLOADED ROSTER ", res)
+      
+    } catch (error) {
+      console.log("done loading")
+      console.log("upload roster error ", error)
+    }
+  }
+
+  const addToRoster = (data:any) => {
+
+    let arr1:any = roster;
+
+    arr1.push(data);
+
+    setRoster(arr1);
+
+  }
+
   const handleTeamNameSubmit = () => {
     if (teamName) {
       // Combine the selected players and team name and save the data
@@ -227,8 +265,16 @@ const FantasyFootball = () => {
         players: selectedPlayers,
       };
 
+      console.log("roster ", roster)
+
       // Store the team data
       setSavedTeam(newTeam);
+
+      uploadRoster({
+        address: "0xfE8ca1261f853330298FF34d0ce07ca0d63Ca0a1",
+        rosterName: teamName,
+        roster
+      })
 
       // Log the selected team data to the console
       console.log("Saved Team:", newTeam);
@@ -435,13 +481,26 @@ const FantasyFootball = () => {
                             <div key={id} className="mb-4 pl-4">
                               <h3 
                                 className="font-semibold capitalize mb-2 cursor-pointer"
-                                onClick={() =>
+                                onClick={() =>{
                                   handlePlayerSelection(
                                     cur.player.name,
                                     cur.statistics[0].games.position,
                                     selectedPlayers[cur.statistics[0].games.position].indexOf("")
-                                  )
-                                }
+                                  );
+
+                                  addToRoster({
+                                    name: cur.player.name,
+                                    jerseyNumber: cur.statistics[0].games.number,
+                                    position: cur.statistics[0].games.position,
+                                    clubName: cur.statistics[0].team.name,
+                                    playerId: cur.player.id,
+                                    sportId: cur.statistics[0].team.id,
+                                    cityId: cur.statistics[0].team.id,
+                                    image: cur.player.photo,
+                                    point: 0,
+                                    teamId: cur.statistics[0].id
+                                  })
+                                }}
                               >
                                 {cur.statistics[0].games.position}
 
