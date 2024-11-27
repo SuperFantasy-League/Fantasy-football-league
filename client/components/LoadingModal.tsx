@@ -8,7 +8,7 @@ type TProps = {
 function LoadingModal({ isOpen, onClose, text }: TProps) {
   return (
     <CustomModal isOpen={isOpen} onClose={onClose} className="!max-w-[168px]">
-      <div className="centered flex-col">
+      <div className="flex items-center justify-center flex-col">
         <div className="absolute right-2 top-2 z-50 h-8 w-8 bg-white" />
         <div role="status">
           <svg
