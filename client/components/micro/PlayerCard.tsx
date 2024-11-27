@@ -15,13 +15,13 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
   return (
     <div className="bg-green-700 rounded-lg p-6 text-white text-center gap-3 flex flex-col justify-center items-center">
       <Image
-        src={jerseyImage || "/add-user-svgrepo-com2.svg"}
+        src={jerseyImage || "/user-svgrepo-com.svg"}
         alt="footballer"
-        width={20}
-        height={20}
+        width={30}
+        height={30}
       />
       <div className="text-white text-xs font-bold">{role}</div>
-      <div className="text-xs overflow-hidden text-ellipsis w-full">
+      <div className="text-sm font-bold underline overflow-hidden text-ellipsis w-full">
         {playerName || ""}
       </div>
     </div>
