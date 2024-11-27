@@ -19,7 +19,6 @@ export function PastWinnersTable({ winners }: { winners: Array<unknown> }) {
           <TableHead className="text-right">Team Name</TableHead>
           <TableHead className="text-right">Manager</TableHead>
           <TableHead className="text-right">Points</TableHead>
-          {/* <TableHead className="text-right">Points</TableHead> */}
         </TableRow>
       </TableHeader>
       <TableBody>
