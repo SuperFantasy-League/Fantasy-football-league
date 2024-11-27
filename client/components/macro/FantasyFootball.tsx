@@ -18,9 +18,13 @@ import {
 import PlayerCard from "../micro/PlayerCard";
 import { Button } from "@/components/ui/button";
 import Fixtures from "./Fixtures";
+import useCreateTeam from "@/hooks/contract-hooks/useCreateTeam";
+import { toBigInt } from "ethers";
+import { toast } from "@/hooks/use-toast";
 
 // Main Component
 const FantasyFootball = () => {
+  const { sendTx, isPending, contract, prepareContractCall } = useCreateTeam();
   const [selectedPlayers, setSelectedPlayers] = useState({
     Goalkeeper: ["", ""],
     Defender: ["", "", "", "", ""],
@@ -36,7 +40,7 @@ const FantasyFootball = () => {
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState<any>(null);
   const [teamName, setTeamName] = useState("");
-  const [savedTeam, setSavedTeam] = useState<any>(null);
+  // const [savedTeam, setSavedTeam] = useState<any>(null);
   const [teams, setteams] = useState<any>([]);
   const [players, setplayers] = useState<any>([]);
 
@@ -139,11 +143,14 @@ const FantasyFootball = () => {
       try {
         // Extract player IDs from selectedPlayers
         console.log(selectedPlayers);
+
         //@ts-ignore
         const filteredPlayer = Object.values(selectedPlayers)
           .flat()
           .filter((player) => player !== "");
+
         console.log({ filteredPlayer });
+
         // Filter out empty slots
         const playerIds = filteredPlayer.map((player) => player.id); // Match and get IDs
 
@@ -154,59 +161,39 @@ const FantasyFootball = () => {
           return;
         }
 
-        // Save to blockchain
-        await uploadToBlockchain(teamName, playerIds);
+        // try {
+        const convertToBigInt = playerIds.map((id) => toBigInt(id));
+        // console.log({ convertToBigInt });
+        // createTeam(convertToBigInt);
 
-        // Save to backend
-        const newTeam = {
-          name: teamName,
-          players: selectedPlayers,
-        };
-
-        uploadRoster({
-          address: "0xfE8ca1261f853330298FF34d0ce07ca0d63Ca0a1",
-          rosterName: teamName,
-          roster: playerIds, // Include player IDs
+        const transaction = prepareContractCall({
+          contract,
+          method: "function createTeam(uint256[] calldata _playerIds)", // Adjust this to match your actual contract function
+          params: [convertToBigInt],
         });
 
-        console.log("Saved Team:", newTeam);
-        setIsTeamNameModalOpen(false);
-        alert(`Team ${teamName} has been saved!`);
-      } catch (error) {
-        console.error("Error saving team:", error);
-        alert("Failed to save the team.");
+        sendTx(transaction);
+        toast({
+          description: "Team created",
+        });
+
+        // await uploadRoster({
+        //   address: "0xfE8ca1261f853330298FF34d0ce07ca0d63Ca0a1",
+        //   rosterName: teamName,
+        //   roster: playerIds, // Include player IDs
+        // });
+
+        // setIsTeamNameModalOpen(false);
+        // alert(`Team ${teamName} has been saved!`);
+        // } catch (err) {
+        //   console.error("Blockchain transaction failed:", err);
+        //   alert("Failed to save team to blockchain.");
+        // }
+      } catch (err) {
+        console.error("Error processing team data:", err);
       }
     } else {
       alert("Please enter a team name.");
-    }
-  };
-
-  const uploadToBlockchain = async (teamName, playerIds) => {
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum); // Use Metamask
-      const signer = provider.getSigner();
-
-      // Replace with your contract's address and ABI
-      const contractAddress = "0xYourSmartContractAddress";
-      const contractABI = [
-        // Replace this with your contract's ABI
-        "function uploadRoster(string teamName, uint256[] playerIds) public",
-      ];
-
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-
-      console.log("Uploading to blockchain...");
-      const tx = await contract.uploadRoster(teamName, playerIds);
-      await tx.wait(); // Wait for transaction confirmation
-      console.log("Transaction confirmed:", tx);
-      alert(`Roster uploaded to blockchain! Transaction hash: ${tx.hash}`);
-    } catch (error) {
-      console.error("Blockchain upload failed:", error);
-      alert("Failed to upload roster to blockchain.");
     }
   };
 
@@ -539,7 +526,7 @@ const FantasyFootball = () => {
                 Cancel
               </Button>
               <Button type="button" onClick={handleTeamNameSubmit}>
-                Save Team Name
+                {isPending ? "Saving..." : "Save Team Name"}
               </Button>
             </DialogFooter>
           </DialogContent>

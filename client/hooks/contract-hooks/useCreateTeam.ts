@@ -1,23 +1,50 @@
 import { useSendTransaction } from "thirdweb/react";
 import { getContract, prepareContractCall } from "thirdweb";
-import { sepolia } from "thirdweb/chains";
+import { client } from "@/lib/client";
+import { liskSepolia } from "@/lib/chain";
+import { toast } from "../use-toast";
 
-const liskSepolia = defineChain(4202);
+// Move contract definition outside the hook since it's static
 
-const contract = getContract({
-  client,
-  address: "0x2Ddd626E0acd6d80783582CbB6B8d8d374eAD956",
-  chain: liskSepolia,
-});
-
-const { mutate: sendTx, data: transactionResult } = useSendTransaction();
-
-const onClick = () => {
-  const transaction = prepareContractCall({
-    contract,
-    method: "function transfer(address to, uint256 value)",
-    params: [to, value],
+const useCreateTeam = () => {
+  const contract = getContract({
+    client,
+    address: "0x2Ddd626E0acd6d80783582CbB6B8d8d374eAD956",
+    chain: liskSepolia,
   });
+  // Get the sendTransaction hook
+  const { mutateAsync: sendTx, isPending, error, data } = useSendTransaction();
 
-  sendTx(transaction);
+  // Function to create a team
+  const createTeam = (playerIds: bigint[]) => {
+    // try {
+    const transaction = prepareContractCall({
+      contract,
+      method: "function createTeam(uint256[] calldata _playerIds) external", // Adjust this to match your actual contract function
+      params: [playerIds],
+    });
+
+    sendTx(transaction).then((res) => {
+      console.log(res);
+      toast({
+        description: "Team created",
+      });
+    });
+    // } catch (err) {
+    //   console.error("Error creating team:", err);
+    //   throw err;
+    // }
+  };
+
+  return {
+    createTeam,
+    isPending,
+    error,
+    transactionResult: data,
+    sendTx,
+    prepareContractCall,
+    contract,
+  };
 };
+
+export default useCreateTeam;
