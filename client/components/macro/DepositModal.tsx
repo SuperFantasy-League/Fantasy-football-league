@@ -6,8 +6,21 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
   Form,
   FormControl,
   FormDescription,
@@ -87,7 +100,7 @@ const DepositModal = () => {
     });
   }
 
-  const { data, isLoading, isError } = useWalletBalance({
+  const { data } = useWalletBalance({
     client,
     address: undefined,
     chain: liskSepolia,
@@ -146,9 +159,14 @@ const DepositModal = () => {
                 )}
               />
               <FormDescription>
-                balance:
-                {data?.displayValue}
-                {data?.symbol}
+                balance:{" "}
+                {data ? (
+                  <>
+                    {data.displayValue} {data.symbol}
+                  </>
+                ) : (
+                  "Loading..."
+                )}
               </FormDescription>
               <Button type="submit">
                 {depositing ? "Depositing..." : "Submit"}

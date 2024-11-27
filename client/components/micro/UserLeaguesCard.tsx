@@ -5,7 +5,6 @@ import { Card } from "../ui/card";
 const UserLeaguesCard = () => {
 
     const account = useActiveAccount();
-
     const { leagues, leaguesLoading } = UseFetchUserLeagues();
 
     return (

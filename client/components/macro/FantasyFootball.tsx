@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
@@ -100,13 +101,13 @@ const FantasyFootball = () => {
     }
   };
 
-  const addToRoster = (data: any) => {
+  /* const addToRoster = (data: any) => {
     let arr1: any = roster;
 
     arr1.push(data);
 
     setRoster(arr1);
-  };
+  }; */
 
   /* const handleTeamNameSubmit = () => {
     if (teamName) {

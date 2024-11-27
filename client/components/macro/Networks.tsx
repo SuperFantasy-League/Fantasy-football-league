@@ -1,5 +1,4 @@
 import Image from "next/image";
-//import { Button } from "../ui/button";
 import GetStartedButton from "../micro/GetStartedButton";
 
 const Networks = () => {

@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { contractAddress } from "@/lib/address";
-import { Card, CardContent, CardHeader } from "../ui/card"
-import UseFetchUserTransactions from "@/hooks/contract-hooks/useFetchUserTransactions"
+import { Card, CardContent, CardHeader } from "../ui/card";
+import UseFetchUserTransactions from "@/hooks/contract-hooks/useFetchUserTransactions";
 import Link from "next/link";
 import { getContract, prepareEvent } from "thirdweb";
 import { useContractEvents } from "thirdweb/react";
 import { liskSepolia } from "@/lib/chain";
 import { client } from "@/lib/client";
-import useEthRate from '@/hooks/useCurrencyConverter';
-import { formatEther } from 'viem';
+import useEthRate from "@/hooks/useCurrencyConverter";
+import { formatEther } from "viem";
 
 // First, add the Transaction type
 type Transaction = {
@@ -139,4 +139,4 @@ const RecentTx = () => {
   )
 }
 
-export default RecentTx
+export default RecentTx;

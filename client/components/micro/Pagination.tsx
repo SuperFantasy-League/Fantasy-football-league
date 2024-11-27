@@ -23,11 +23,10 @@ const PaginationWithHandlers = () => {
         onClick={goToFirstPage}
         disabled={currentPage === 1}
         className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors
-                   ${
-                     currentPage === 1
-                       ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                       : "bg-gray-100 hover:bg-gray-200 text-purple-900"
-                   }`}
+                   ${currentPage === 1
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "bg-gray-100 hover:bg-gray-200 text-purple-900"
+          }`}
         aria-label="Go to first page"
       >
         <ChevronFirst size={20} />
@@ -37,11 +36,10 @@ const PaginationWithHandlers = () => {
         onClick={goToPrevPage}
         disabled={currentPage === 1}
         className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors
-                   ${
-                     currentPage === 1
-                       ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                       : "bg-gray-100 hover:bg-gray-200 text-purple-900"
-                   }`}
+                   ${currentPage === 1
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "bg-gray-100 hover:bg-gray-200 text-purple-900"
+          }`}
         aria-label="Go to previous page"
       >
         <ChevronLeft size={20} />
@@ -57,11 +55,10 @@ const PaginationWithHandlers = () => {
         onClick={goToNextPage}
         disabled={currentPage === totalPages}
         className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors
-                   ${
-                     currentPage === totalPages
-                       ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                       : "bg-gray-100 hover:bg-gray-200 text-purple-900"
-                   }`}
+                   ${currentPage === totalPages
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "bg-gray-100 hover:bg-gray-200 text-purple-900"
+          }`}
         aria-label="Go to next page"
       >
         <ChevronRight size={20} />
@@ -71,11 +68,10 @@ const PaginationWithHandlers = () => {
         onClick={goToLastPage}
         disabled={currentPage === totalPages}
         className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors
-                   ${
-                     currentPage === totalPages
-                       ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                       : "bg-gray-100 hover:bg-gray-200 text-purple-900"
-                   }`}
+                   ${currentPage === totalPages
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "bg-gray-100 hover:bg-gray-200 text-purple-900"
+          }`}
         aria-label="Go to last page"
       >
         <ChevronLast size={20} />

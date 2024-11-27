@@ -67,7 +67,7 @@ const League = ({ children }: { children: React.ReactNode }) => {
 
       <Tabs defaultValue={selectedTab} className="w-full">
         <TabsList className="flex items-center gap-4 py-8 w-2/4">
-          <Link href={"/dashboard/fantasy/scp"}>
+          <Link href={"/dashboard/fantasy/epl"}>
             <TabsTrigger
               className="py-2 px-6"
               value="overview"
@@ -87,15 +87,17 @@ const League = ({ children }: { children: React.ReactNode }) => {
             </TabsTrigger>
           </Link>
 
-          <TabsTrigger
-            className="py-2 px-6"
-            value="matches"
-            onClick={() => handleTabChange("matches")}
-          >
-            Matches
-          </TabsTrigger>
+          <Link href={`/dashboard/fantasy/epl/usermatches`}>
+            <TabsTrigger
+              className="py-2 px-6"
+              value="matches"
+              onClick={() => handleTabChange("matches")}
+            >
+              Matches
+            </TabsTrigger>
+          </Link>
 
-          <Link href={`/${pathname.split("/").slice(1).join("/")}/userleagues`}>
+          <Link href={`/dashboard/fantasy/epl/userleagues`}>
             <TabsTrigger
               className="py-2 px-6"
               value="leagues"
