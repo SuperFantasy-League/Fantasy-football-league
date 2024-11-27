@@ -4,6 +4,7 @@ import RecentTx from "@/components/macro/RecentTx";
 import GameBreakdown from "@/components/micro/GameBreakdown";
 import UserBalanceCard from "@/components/micro/UserBalanceCard";
 import UserLeaguesCard from "@/components/micro/UserLeaguesCard";
+import UserTeamsCard from "@/components/micro/UserTeamsCard";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { useActiveAccount } from "thirdweb/react";
@@ -30,6 +31,7 @@ export default function Page() {
             }
           </Card> */}
           <UserLeaguesCard />
+          <UserTeamsCard />
           <Card className="flex flex-col items-start gap-3 p-4 shadow-md">
             <p className="text-xs font-medium text-gray-600">
               Current Season Points
@@ -53,11 +55,6 @@ export default function Page() {
                 </small>
               </p>
             )}
-          </Card>
-
-          <Card className="flex flex-col items-start gap-3 p-4 shadow-md">
-            <p className="text-sm">Season position</p>
-            <p className="text-2xl font-medium">3rd</p>
           </Card>
         </div>
       </div>
@@ -103,12 +100,12 @@ export default function Page() {
               <p className="pl-2">
                 {nextFixture?.date
                   ? new Date(nextFixture.date).toLocaleString("en-US", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })
                   : "Date Not Available"}
               </p>
             </div>
