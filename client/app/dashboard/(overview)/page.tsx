@@ -91,9 +91,7 @@ export default function Page() {
               <div className="pr-2 flex items-center gap-2">
                 <Image
                   src={
-                    nextFixture?.league.logo
-                      ? nextFixture?.league.logo
-                      : "/placeholder.png"
+                    nextFixture?.league.logo ? nextFixture?.league.logo : null
                   }
                   alt={"EPL"}
                   className="w-8 h-8"
@@ -120,7 +118,7 @@ export default function Page() {
                 <p>{nextFixture?.teams?.home?.name || "Home Team"}</p>
                 <div className="h-12 w-12 rounded-lg flex justify-center items-center bg-zinc-200/60 border shadow">
                   <Image
-                    src={nextFixture?.teams?.home?.logo || "/arsenal.png"}
+                    src={nextFixture?.teams?.home?.logo || null}
                     alt={nextFixture?.teams?.home?.name || "Home Team"}
                     width={27}
                     height={10}
@@ -136,7 +134,7 @@ export default function Page() {
                 <p>{nextFixture?.teams?.away?.name || "Away Team"}</p>
                 <div className="h-12 w-12 rounded-lg flex justify-center items-center bg-zinc-200/60 border shadow">
                   <Image
-                    src={nextFixture?.teams?.away?.logo || "/realmadrid.png"}
+                    src={nextFixture?.teams?.away?.logo || null}
                     alt={nextFixture?.teams?.away?.name || "Away Team"}
                     width={27}
                     height={10}
