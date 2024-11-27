@@ -2,7 +2,6 @@ import { useSendTransaction } from "thirdweb/react";
 import { getContract, prepareContractCall } from "thirdweb";
 import { client } from "@/lib/client";
 import { liskSepolia } from "@/lib/chain";
-import { toast } from "../use-toast";
 
 // Move contract definition outside the hook since it's static
 
@@ -13,7 +12,13 @@ const useCreateTeam = () => {
     chain: liskSepolia,
   });
   // Get the sendTransaction hook
-  const { mutateAsync: sendTx, isPending, error, data } = useSendTransaction();
+  const {
+    mutateAsync: sendTx,
+    isPending,
+    isSuccess,
+    error,
+    data,
+  } = useSendTransaction();
 
   // Function to create a team
   const createTeam = (playerIds: bigint[]) => {
@@ -26,9 +31,6 @@ const useCreateTeam = () => {
 
     sendTx(transaction).then((res) => {
       console.log(res);
-      toast({
-        description: "Team created",
-      });
     });
     // } catch (err) {
     //   console.error("Error creating team:", err);
@@ -39,6 +41,7 @@ const useCreateTeam = () => {
   return {
     createTeam,
     isPending,
+    isSuccess,
     error,
     transactionResult: data,
     sendTx,

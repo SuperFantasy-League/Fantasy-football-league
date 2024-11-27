@@ -24,7 +24,8 @@ import { toast } from "@/hooks/use-toast";
 
 // Main Component
 const FantasyFootball = () => {
-  const { sendTx, isPending, contract, prepareContractCall } = useCreateTeam();
+  const { sendTx, isPending, isSuccess, contract, prepareContractCall } =
+    useCreateTeam();
   const [selectedPlayers, setSelectedPlayers] = useState({
     Goalkeeper: ["", ""],
     Defender: ["", "", "", "", ""],
@@ -40,7 +41,7 @@ const FantasyFootball = () => {
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState<any>(null);
   const [teamName, setTeamName] = useState("");
-  // const [savedTeam, setSavedTeam] = useState<any>(null);
+  const [isSaveSuccess, setIsSaveSuccess] = useState(false);
   const [teams, setteams] = useState<any>([]);
   const [players, setplayers] = useState<any>([]);
 
@@ -176,6 +177,13 @@ const FantasyFootball = () => {
         toast({
           description: "Team created",
         });
+
+        if (isSuccess) {
+          setTimeout(() => {
+            setIsTeamNameModalOpen(false);
+            setIsSaveSuccess(false);
+          }, 3000);
+        }
 
         // await uploadRoster({
         //   address: "0xfE8ca1261f853330298FF34d0ce07ca0d63Ca0a1",
@@ -502,33 +510,61 @@ const FantasyFootball = () => {
           onOpenChange={setIsTeamNameModalOpen}
         >
           <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Enter Your Team Name</DialogTitle>
-              <DialogDescription>
-                Please enter a name for your team.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="p-4">
-              <input
-                type="text"
-                className="w-full p-2 border rounded-md"
-                placeholder="Team Name"
-                value={teamName}
-                onChange={(e) => setTeamName(e.target.value)}
-              />
-            </div>
-            <DialogFooter className="sm:justify-start">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => setIsTeamNameModalOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button type="button" onClick={handleTeamNameSubmit}>
-                {isPending ? "Saving..." : "Save Team Name"}
-              </Button>
-            </DialogFooter>
+            {!isPending ? (
+              <>
+                <DialogHeader>
+                  <DialogTitle>Enter Your Team Name</DialogTitle>
+                  <DialogDescription>
+                    Please enter a name for your team.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="p-4">
+                  <input
+                    type="text"
+                    className="w-full p-2 border rounded-md"
+                    placeholder="Team Name"
+                    value={teamName}
+                    onChange={(e) => setTeamName(e.target.value)}
+                  />
+                </div>
+                <DialogFooter className="sm:justify-start">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setIsTeamNameModalOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="button" onClick={handleTeamNameSubmit}>
+                    {isPending ? "Saving..." : "Save Team Name"}
+                  </Button>
+                </DialogFooter>
+              </>
+            ) : (
+              <div className="p-6 text-center">
+                <div className="mb-4 text-green-500">
+                  <svg
+                    className="mx-auto h-12 w-12"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <DialogTitle className="mb-2">
+                  Team Saved Successfully!
+                </DialogTitle>
+                <DialogDescription>
+                  Your team {teamName} has been created.
+                </DialogDescription>
+              </div>
+            )}
           </DialogContent>
         </Dialog>
       </div>
