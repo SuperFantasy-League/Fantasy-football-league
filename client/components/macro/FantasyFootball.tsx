@@ -41,7 +41,6 @@ const FantasyFootball = () => {
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState<any>(null);
   const [teamName, setTeamName] = useState("");
-  const [isSaveSuccess, setIsSaveSuccess] = useState(false);
   const [teams, setteams] = useState<any>([]);
   const [players, setplayers] = useState<any>([]);
 
