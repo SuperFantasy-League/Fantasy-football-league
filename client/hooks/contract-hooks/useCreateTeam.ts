@@ -6,7 +6,7 @@ import { liskSepolia } from "@/lib/chain";
 const useCreateTeam = () => {
   const contract = getContract({
     client,
-    address: "0x2Ddd626E0acd6d80783582CbB6B8d8d374eAD956",
+    address: "0x1C2E88d6Bc5099e864047d3685b2979AF3188dE3",
     chain: liskSepolia,
   });
   // Get the sendTransaction hook

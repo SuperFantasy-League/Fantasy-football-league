@@ -106,7 +106,7 @@ const RecentTx = () => {
             {localTransactions?.map((tx, index) => {
               const { text: txTypeText, className: txTypeClassName } = renderTransactionType(tx.txType);
               return (
-                <li key={tx.id}>
+                <li key={tx.id} className={txTypeText === "Unknown" ? "hidden" : ""}>
                   <div className="flex justify-between items-center">
                     <div className="inline-flex items-center gap-4">
                       <p className={`w-16 py-1 text-center ${txTypeClassName} text-xs rounded-2xl border`}>
