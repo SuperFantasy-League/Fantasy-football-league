@@ -28,6 +28,7 @@ import { defineChain } from "thirdweb";
 import { useSendTransaction } from "thirdweb/react";
 import { getContract, prepareContractCall } from "thirdweb";
 import { parseEther } from "viem";
+import { useEffect, useState } from "react";
 
 const liskSepolia = defineChain(4202);
 
@@ -44,7 +45,8 @@ const FormSchema = z.object({
 });
 
 const DepositModal = () => {
-    const { toast } = useToast();
+  const { toast } = useToast();
+  const [open, setOpen] = useState(false);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -53,7 +55,13 @@ const DepositModal = () => {
         },
     });
 
-    const { mutate: sendTx, data: transactionResult } = useSendTransaction();
+  const {
+    mutate: sendTx,
+    data: transactionResult,
+    isPending: depositing,
+    isSuccess,
+    // isError: depositError,
+  } = useSendTransaction();
 
     if (transactionResult) {
         console.log("transaction result", transactionResult);
@@ -87,57 +95,72 @@ const DepositModal = () => {
     });
     // console.log("balance", data?.displayValue, data?.symbol);
 
-    return (
-        <>
-            <Dialog>
-                <DialogTrigger>
-                    <Button className="bg-green-600 shadow rounded-3xl text-sm">Deposit</Button>
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Deposit</DialogTitle>
-                        <DialogDescription>
-                            Deposit into your account to start playing
-                        </DialogDescription>
-                    </DialogHeader>
-                    <Form {...form}>
-                        <form
-                            onSubmit={form.handleSubmit(onSubmit)}
-                            className="w-full space-y-6"
-                        >
-                            <FormField
-                                control={form.control}
-                                name="amount"
-                                render={({ field }) => (
-                                    <FormItem className="w-full">
-                                        <FormLabel>Amount to deposit</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                className="w-full"
-                                                placeholder="Enter an amount to deposit"
-                                                type="number"
-                                                {...field}
-                                                onChange={(e) => {
-                                                    form.setValue("amount", Number(e.target.value));
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormDescription>
-                                balance:
-                                {data?.displayValue}
-                                {data?.symbol}
-                            </FormDescription>
-                            <Button type="submit">Submit</Button>
-                        </form>
-                    </Form>
-                </DialogContent>
-            </Dialog>
-        </>
-    );
+  useEffect(() => {
+    if (isSuccess) {
+      setOpen(false);
+      form.setValue("amount", 0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
+
+  return (
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger>
+          <Button
+            onClick={() => setOpen(true)}
+            className="bg-green-600 shadow rounded-3xl text-sm"
+          >
+            Deposit
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Deposit</DialogTitle>
+            <DialogDescription>
+              Deposit into your account to start playing
+            </DialogDescription>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full space-y-6"
+            >
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Amount to deposit</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="w-full"
+                        placeholder="Enter an amount to deposit"
+                        type="number"
+                        {...field}
+                        onChange={(e) => {
+                          form.setValue("amount", Number(e.target.value));
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormDescription>
+                balance:
+                {data?.displayValue}
+                {data?.symbol}
+              </FormDescription>
+              <Button type="submit">
+                {depositing ? "Depositing..." : "Submit"}
+              </Button>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
 };
 
 export default DepositModal;
