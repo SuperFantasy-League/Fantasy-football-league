@@ -21,7 +21,7 @@ const ConnectWalletModal = () => {
                         <DialogHeader>
                             <DialogTitle>Connect a wallet</DialogTitle>
                             <DialogDescription>
-                                Connect a wallet or create one, to get the best of aceFantasy
+                                Connect a wallet or create one, to get the best of AceFantasy
                             </DialogDescription>
                         </DialogHeader>
                         <section className="flex justify-center items-center w-full h-full">

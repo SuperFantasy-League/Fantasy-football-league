@@ -12,7 +12,7 @@ import GetStartedButton from "@/components/micro/GetStartedButton";
 export default function Home() {
   const { scrollYProgress } = useScroll();
   const [walletText, setWalletText] = useState(
-    "Create Your wallet In seconds."
+    "Create Your Wallet In Seconds."
   );
   const [tagText, setTagText] = useState("simple");
 
@@ -43,7 +43,7 @@ export default function Home() {
         const { top } = featuresSection.getBoundingClientRect();
         if (top < window.innerHeight && top > 0) {
           // Check if the section is in view
-          setWalletText("Create Your wallet In seconds.");
+          setWalletText("Create Your Wallet In Seconds.");
           setTagText("simple");
         } else {
           setWalletText("Focus on games, payouts are automatic");
@@ -69,7 +69,7 @@ export default function Home() {
             </p>
 
             <p className="text-2xl font-semibold text-center inline-flex items-center -pt-4">
-              your way with ace
+              your way with ace ⚡️
             </p>
           </div>
           <h1 className="text-[9em] tracking-tighter font-semibold inline-flex items-center gap-5 font-[family-name:var(--font-geist-sans)]">

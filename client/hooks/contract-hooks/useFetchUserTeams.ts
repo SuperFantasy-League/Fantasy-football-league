@@ -1,4 +1,4 @@
-import { getContract, defineChain } from "thirdweb";
+import { getContract } from "thirdweb";
 import { useReadContract } from "thirdweb/react";
 import { client } from "@/lib/client";
 import { useActiveAccount } from "thirdweb/react";
@@ -11,20 +11,20 @@ const contract = getContract({
     chain: liskSepolia
 });
 
-const UseFetchUserLeagues = () => {
+const UseFetchUserTeams = () => {
 
     const account = useActiveAccount();
 
-    const { data: leagues, isLoading: leaguesLoading } = useReadContract({
+    const { data: teams, isLoading: teamsLoading } = useReadContract({
         contract,
-        method: "function getUserLeagues(address _owner) external view returns (uint256[] memory)",
+        method: "function getUserTeams(address _owner) external view returns (uint256[] memory)",
         params: [account?.address || ""]
     });
 
     return {
-        leagues,
-        leaguesLoading
+        teams,
+        teamsLoading
     };
 };
 
-export default UseFetchUserLeagues;
+export default UseFetchUserTeams;
