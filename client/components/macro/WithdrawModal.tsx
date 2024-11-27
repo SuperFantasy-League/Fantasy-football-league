@@ -62,7 +62,6 @@ const WithdrawModal = () => {
         data: transactionResult,
         isPending: withdrawing,
         isSuccess: isWithdrawSuccess,
-        isError: withdrawError,
     } = useSendTransaction();
 
     if (transactionResult) {

@@ -1,20 +1,20 @@
 "use client";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,27 +32,27 @@ import { liskSepolia } from "@/lib/chain";
 import { contractAddress } from "@/lib/address";
 
 const contract = getContract({
-    address: contractAddress,
-    chain: liskSepolia,
-    client,
+  address: contractAddress,
+  chain: liskSepolia,
+  client,
 });
 
 const FormSchema = z.object({
-    amount: z.number().positive().gt(0, {
-        message: "Deposit amount must be a positive number greater than 0.",
-    }),
+  amount: z.number().positive().gt(0, {
+    message: "Deposit amount must be a positive number greater than 0.",
+  }),
 });
 
 const DepositModal = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
-        defaultValues: {
-            amount: 0,
-        },
-    });
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      amount: 0,
+    },
+  });
 
   const {
     mutate: sendTx,
@@ -62,36 +62,36 @@ const DepositModal = () => {
     // isError: depositError,
   } = useSendTransaction();
 
-    if (transactionResult) {
-        console.log("transaction result", transactionResult);
-    }
+  if (transactionResult) {
+    console.log("transaction result", transactionResult);
+  }
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-        const transaction = prepareContractCall({
-            contract,
-            method: "function deposit() external payable",
-            // value: BigInt(Number(data.amount)),
-            value: parseEther(data.amount.toString()),
-            params: [],
-        });
-        sendTx(transaction);
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">
-                        {JSON.stringify(data.amount, null, 2)}
-                    </code>
-                </pre>
-            ),
-        });
-    }
-
-    const { data, isLoading, isError } = useWalletBalance({
-        client,
-        address: undefined,
-        chain: liskSepolia,
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    const transaction = prepareContractCall({
+      contract,
+      method: "function deposit() external payable",
+      // value: BigInt(Number(data.amount)),
+      value: parseEther(data.amount.toString()),
+      params: [],
     });
+    sendTx(transaction);
+    toast({
+      title: "You submitted the following values:",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">
+            {JSON.stringify(data.amount, null, 2)}
+          </code>
+        </pre>
+      ),
+    });
+  }
+
+  const { data } = useWalletBalance({
+    client,
+    address: undefined,
+    chain: liskSepolia,
+  });
 
   useEffect(() => {
     if (isSuccess) {
@@ -146,9 +146,14 @@ const DepositModal = () => {
                 )}
               />
               <FormDescription>
-                balance:
-                {data?.displayValue}
-                {data?.symbol}
+                balance:{" "}
+                {data ? (
+                  <>
+                    {data.displayValue} {data.symbol}
+                  </>
+                ) : (
+                  "Loading..."
+                )}
               </FormDescription>
               <Button type="submit">
                 {depositing ? "Depositing..." : "Submit"}
