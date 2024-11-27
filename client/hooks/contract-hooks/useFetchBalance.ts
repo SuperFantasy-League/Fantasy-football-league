@@ -1,12 +1,13 @@
 import { getContract, defineChain } from "thirdweb";
 import { useActiveAccount, useReadContract } from "thirdweb/react";
 import { client } from "@/lib/client";
+import { liskSepolia } from "@/lib/chain";
+import { contractAddress } from "@/lib/address";
 
-const liskSepolia = defineChain(4202);
 
 const contract = getContract({
   client,
-  address: "0x47F5fa8f71A6E2672A6E3596d153fb0FA1e5b0D1",
+  address: contractAddress,
   chain: liskSepolia,
 });
 

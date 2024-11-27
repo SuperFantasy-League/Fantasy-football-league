@@ -24,16 +24,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useWalletBalance } from "thirdweb/react";
 import { client } from "@/lib/client";
-import { defineChain } from "thirdweb";
 import { useSendTransaction } from "thirdweb/react";
 import { getContract, prepareContractCall } from "thirdweb";
 import { parseEther } from "viem";
 import { useEffect, useState } from "react";
-
-const liskSepolia = defineChain(4202);
+import { liskSepolia } from "@/lib/chain";
+import { contractAddress } from "@/lib/address";
 
 const contract = getContract({
-    address: "0x47F5fa8f71A6E2672A6E3596d153fb0FA1e5b0D1",
+    address: contractAddress,
     chain: liskSepolia,
     client,
 });
@@ -93,7 +92,6 @@ const DepositModal = () => {
         address: undefined,
         chain: liskSepolia,
     });
-    // console.log("balance", data?.displayValue, data?.symbol);
 
   useEffect(() => {
     if (isSuccess) {
