@@ -22,12 +22,12 @@ import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useWalletBalance } from "thirdweb/react";
 import { client } from "@/lib/client";
 import { defineChain } from "thirdweb";
 import { useSendTransaction } from "thirdweb/react";
 import { getContract, prepareContractCall } from "thirdweb";
-import { parseEther } from "viem";
+import UseFetchBalance from "@/hooks/contract-hooks/useFetchBalance";
+import { formatEther, parseEther } from "viem";
 
 const liskSepolia = defineChain(4202);
 
@@ -43,8 +43,11 @@ const FormSchema = z.object({
     }),
 });
 
-const DepositModal = () => {
+const WithdrawModal = () => {
     const { toast } = useToast();
+
+    const { balance, balanceLoading } = UseFetchBalance();
+
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -62,10 +65,9 @@ const DepositModal = () => {
     function onSubmit(data: z.infer<typeof FormSchema>) {
         const transaction = prepareContractCall({
             contract,
-            method: "function deposit() external payable",
-            // value: BigInt(Number(data.amount)),
-            value: parseEther(data.amount.toString()),
-            params: [],
+            method: "function withdraw(uint _amount) external",
+            // params: [BigInt(data.amount)],
+            params: [parseEther(data.amount.toString())],
         });
         sendTx(transaction);
         toast({
@@ -80,24 +82,19 @@ const DepositModal = () => {
         });
     }
 
-    const { data, isLoading, isError } = useWalletBalance({
-        client,
-        address: undefined,
-        chain: liskSepolia,
-    });
-    // console.log("balance", data?.displayValue, data?.symbol);
-
     return (
         <>
             <Dialog>
                 <DialogTrigger>
-                    <Button className="bg-green-600 shadow rounded-3xl text-sm">Deposit</Button>
+                    <Button className="bg-red-600 rounded-3xl text-sm shadow">
+                        Withdraw
+                    </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Deposit</DialogTitle>
+                        <DialogTitle>Withdraw</DialogTitle>
                         <DialogDescription>
-                            Deposit into your account to start playing
+                            Withdraw Funds
                         </DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
@@ -110,7 +107,7 @@ const DepositModal = () => {
                                 name="amount"
                                 render={({ field }) => (
                                     <FormItem className="w-full">
-                                        <FormLabel>Amount to deposit</FormLabel>
+                                        <FormLabel>Amount to withdraw</FormLabel>
                                         <FormControl>
                                             <Input
                                                 className="w-full"
@@ -127,9 +124,12 @@ const DepositModal = () => {
                                 )}
                             />
                             <FormDescription>
-                                balance:
-                                {data?.displayValue}
-                                {data?.symbol}
+                                {
+                                    balanceLoading ?
+                                        "Fetching balance ..."
+                                        :
+                                        formatEther(balance ?? BigInt(0))
+                                }
                             </FormDescription>
                             <Button type="submit">Submit</Button>
                         </form>
@@ -140,4 +140,4 @@ const DepositModal = () => {
     );
 };
 
-export default DepositModal;
+export default WithdrawModal;
