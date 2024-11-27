@@ -3,59 +3,53 @@ import Image from "next/image";
 
 // Fixture component to display individual fixture details
 const Fixture = ({ fixture }: any) => {
-  const { teams, score, league, date } = fixture;
+  const { teams, league } = fixture;
   const { home, away } = teams;
-  const { home: homeScore, away: awayScore } = score.fulltime;
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-10 flex flex-col space-y-4">
-      {/* Fixture Header */}
-      <div className="flex items-center  justify-center space-x-3">
-        <Image
-          src={league.logo ? league.logo : "/placeholder.png"}
-          alt={league.name}
-          className="w-8 h-8"
-          width={32}
-          height={32}
-        />
-        <div>
-          <h3 className="text-xl font-semibold">{league.name}</h3>
-        </div>
-      </div>
-
-      {/* Fixture Teams */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-3">
+    <div className="bg-white shadow-md rounded-lg">
+      <div className="flex gap-20 p-4">
+        {/* Fixture Header */}
+        <div className="flex items-center  justify-center">
           <Image
-            src={home.logo ? home.logo : "/placeholder.png"}
-            alt={home.name}
-            className="w-12 h-12"
-            width={48}
-            height={48}
+            src={league.logo ? league.logo : "/placeholder.png"}
+            alt={league.name}
+            className="w-8 h-8"
+            width={32}
+            height={32}
           />
-          <h4 className="text-lg font-medium">{home.name}</h4>
+          <div>
+            <h3 className="text-xs font-semibold">{league.name}</h3>
+          </div>
         </div>
-        <div className="text-2xl font-bold">
-          <span>
-            {homeScore} - {awayScore}
-          </span>
-        </div>
-        <div className="flex items-center space-x-3">
-          <Image
-            src={away.logo ? away.logo : "/placeholder.png"}
-            alt={away.name}
-            className="w-12 h-12"
-            width={48}
-            height={48}
-          />
-          <h4 className="text-lg font-medium">{away.name}</h4>
-        </div>
-      </div>
+        <div className="grid grid-cols-[auto_auto_auto] gap-4">
+          {/* Fixture Teams */}
+          <div className="flex items-center space-x-1">
+            <h4 className="text-base font-medium">{home.name}</h4>
 
-      {/* Fixture Footer */}
-      <div className="text-gray-600 flex justify-center text-sm">
-        <p>{new Date(date).toLocaleString()}</p>
-        <p>Referee: {fixture.referee}</p>
+            <Image
+              src={home.logo ? home.logo : "/placeholder.png"}
+              alt={home.name}
+              className="w-8 h-8"
+              width={32}
+              height={32}
+            />
+          </div>
+          <div className="text-gray-600 p-2 border-2 border-gray-300 rounded-lg m-4 text-sm">
+            <p>VS</p>
+          </div>
+
+          <div className="flex items-center space-x-1">
+            <Image
+              src={away.logo ? away.logo : "/placeholder.png"}
+              alt={away.name}
+              className="w-8 h-8"
+              width={32}
+              height={32}
+            />
+            <h4 className="text-lg font-medium">{away.name}</h4>
+          </div>
+        </div>
       </div>
     </div>
   );
