@@ -3,8 +3,6 @@ import { getContract, prepareContractCall } from "thirdweb";
 import { client } from "@/lib/client";
 import { liskSepolia } from "@/lib/chain";
 
-// Move contract definition outside the hook since it's static
-
 const useCreateTeam = () => {
   const contract = getContract({
     client,
