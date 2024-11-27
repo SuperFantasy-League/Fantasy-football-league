@@ -101,7 +101,7 @@ export default function Page() {
             <div className="flex justify-center items-center gap-4">
               <div className="flex items-center gap-1.5">
                 <p>{nextFixture?.teams?.home?.name || "Home Team"}</p>
-                <div className="h-12 w-12 rounded-lg flex justify-center items-center bg-zinc-200/60 border shadow">
+                <div className="h-12 w-12 rounded-lg flex justify-center items-center bg-zinc-200/60 border shadow shrink-0">
                   <Image
                     src={nextFixture?.teams?.home?.logo || "/placeholder.png"}
                     alt={nextFixture?.teams?.home?.name || "Home Team"}
@@ -111,13 +111,13 @@ export default function Page() {
                 </div>
               </div>
 
-              <div className="w-10 h-10 rounded-full flex justify-center items-center bg-rose-600 shadow-lg">
+              <div className="w-10 h-10 rounded-full flex justify-center items-center bg-rose-600 shadow-lg shrink-0">
                 <p className="text-md text-white font-medium">VS</p>
               </div>
 
               <div className="flex items-center gap-1.5">
                 <p>{nextFixture?.teams?.away?.name || "Away Team"}</p>
-                <div className="h-12 w-12 rounded-lg flex justify-center items-center bg-zinc-200/60 border shadow">
+                <div className="h-12 w-12 rounded-lg flex justify-center items-center bg-zinc-200/60 border shadow shrink-0">
                   <Image
                     src={nextFixture?.teams?.away?.logo || "/placeholder.png"}
                     alt={nextFixture?.teams?.away?.name || "Away Team"}

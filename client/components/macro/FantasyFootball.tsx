@@ -18,9 +18,14 @@ import {
 import PlayerCard from "../micro/PlayerCard";
 import { Button } from "@/components/ui/button";
 import Fixtures from "./Fixtures";
+import useCreateTeam from "@/hooks/contract-hooks/useCreateTeam";
+import { toBigInt } from "ethers";
+import { toast } from "@/hooks/use-toast";
 
 // Main Component
 const FantasyFootball = () => {
+  const { sendTx, isPending, isSuccess, contract, prepareContractCall } =
+    useCreateTeam();
   const [selectedPlayers, setSelectedPlayers] = useState({
     Goalkeeper: ["", ""],
     Defender: ["", "", "", "", ""],
@@ -36,7 +41,6 @@ const FantasyFootball = () => {
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState<any>(null);
   const [teamName, setTeamName] = useState("");
-  const [savedTeam, setSavedTeam] = useState<any>(null);
   const [teams, setteams] = useState<any>([]);
   const [players, setplayers] = useState<any>([]);
 
@@ -139,11 +143,14 @@ const FantasyFootball = () => {
       try {
         // Extract player IDs from selectedPlayers
         console.log(selectedPlayers);
+
         //@ts-ignore
         const filteredPlayer = Object.values(selectedPlayers)
           .flat()
           .filter((player) => player !== "");
+
         console.log({ filteredPlayer });
+
         // Filter out empty slots
         const playerIds = filteredPlayer.map((player) => player.id); // Match and get IDs
 
@@ -154,59 +161,46 @@ const FantasyFootball = () => {
           return;
         }
 
-        // Save to blockchain
-        await uploadToBlockchain(teamName, playerIds);
+        // try {
+        const convertToBigInt = playerIds.map((id) => toBigInt(id));
+        // console.log({ convertToBigInt });
+        // createTeam(convertToBigInt);
 
-        // Save to backend
-        const newTeam = {
-          name: teamName,
-          players: selectedPlayers,
-        };
-
-        uploadRoster({
-          address: "0xfE8ca1261f853330298FF34d0ce07ca0d63Ca0a1",
-          rosterName: teamName,
-          roster: playerIds, // Include player IDs
+        const transaction = prepareContractCall({
+          contract,
+          method: "function createTeam(uint256[] calldata _playerIds)", // Adjust this to match your actual contract function
+          params: [convertToBigInt],
         });
 
-        console.log("Saved Team:", newTeam);
-        setIsTeamNameModalOpen(false);
-        alert(`Team ${teamName} has been saved!`);
-      } catch (error) {
-        console.error("Error saving team:", error);
-        alert("Failed to save the team.");
+        sendTx(transaction);
+        toast({
+          description: "Team created",
+        });
+
+        if (isSuccess) {
+          setTimeout(() => {
+            setIsTeamNameModalOpen(false);
+            setIsSaveSuccess(false);
+          }, 3000);
+        }
+
+        // await uploadRoster({
+        //   address: "0xfE8ca1261f853330298FF34d0ce07ca0d63Ca0a1",
+        //   rosterName: teamName,
+        //   roster: playerIds, // Include player IDs
+        // });
+
+        // setIsTeamNameModalOpen(false);
+        // alert(`Team ${teamName} has been saved!`);
+        // } catch (err) {
+        //   console.error("Blockchain transaction failed:", err);
+        //   alert("Failed to save team to blockchain.");
+        // }
+      } catch (err) {
+        console.error("Error processing team data:", err);
       }
     } else {
       alert("Please enter a team name.");
-    }
-  };
-
-  const uploadToBlockchain = async (teamName, playerIds) => {
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum); // Use Metamask
-      const signer = provider.getSigner();
-
-      // Replace with your contract's address and ABI
-      const contractAddress = "0xYourSmartContractAddress";
-      const contractABI = [
-        // Replace this with your contract's ABI
-        "function uploadRoster(string teamName, uint256[] playerIds) public",
-      ];
-
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-
-      console.log("Uploading to blockchain...");
-      const tx = await contract.uploadRoster(teamName, playerIds);
-      await tx.wait(); // Wait for transaction confirmation
-      console.log("Transaction confirmed:", tx);
-      alert(`Roster uploaded to blockchain! Transaction hash: ${tx.hash}`);
-    } catch (error) {
-      console.error("Blockchain upload failed:", error);
-      alert("Failed to upload roster to blockchain.");
     }
   };
 
@@ -515,33 +509,61 @@ const FantasyFootball = () => {
           onOpenChange={setIsTeamNameModalOpen}
         >
           <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Enter Your Team Name</DialogTitle>
-              <DialogDescription>
-                Please enter a name for your team.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="p-4">
-              <input
-                type="text"
-                className="w-full p-2 border rounded-md"
-                placeholder="Team Name"
-                value={teamName}
-                onChange={(e) => setTeamName(e.target.value)}
-              />
-            </div>
-            <DialogFooter className="sm:justify-start">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => setIsTeamNameModalOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button type="button" onClick={handleTeamNameSubmit}>
-                Save Team Name
-              </Button>
-            </DialogFooter>
+            {!isPending ? (
+              <>
+                <DialogHeader>
+                  <DialogTitle>Enter Your Team Name</DialogTitle>
+                  <DialogDescription>
+                    Please enter a name for your team.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="p-4">
+                  <input
+                    type="text"
+                    className="w-full p-2 border rounded-md"
+                    placeholder="Team Name"
+                    value={teamName}
+                    onChange={(e) => setTeamName(e.target.value)}
+                  />
+                </div>
+                <DialogFooter className="sm:justify-start">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setIsTeamNameModalOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="button" onClick={handleTeamNameSubmit}>
+                    {isPending ? "Saving..." : "Save Team Name"}
+                  </Button>
+                </DialogFooter>
+              </>
+            ) : (
+              <div className="p-6 text-center">
+                <div className="mb-4 text-green-500">
+                  <svg
+                    className="mx-auto h-12 w-12"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <DialogTitle className="mb-2">
+                  Team Saved Successfully!
+                </DialogTitle>
+                <DialogDescription>
+                  Your team {teamName} has been created.
+                </DialogDescription>
+              </div>
+            )}
           </DialogContent>
         </Dialog>
       </div>

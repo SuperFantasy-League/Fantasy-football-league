@@ -27,40 +27,52 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useCreateLeague from "@/hooks/contract-hooks/useCreateLeague";
 
 const FormSchema = z.object({
   leagueName: z.string().min(2, {
     message: "League name must be at least 2 characters.",
   }),
-  wagerAmount: z.number().positive().gt(0, {
-    message: "Wager amount must be a positive number greater than 0.",
+  wagerAmount: z.number().positive(),
+  wagerDuration: z.string().min(1, {
+    message: "Wager duration is required.",
   }),
 });
 
 const CreateLeagueModal = () => {
-  const { toast } = useToast();
+  // const { toast } = useToast();
+  const { createLeague, isPending } = useCreateLeague();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       leagueName: "",
       wagerAmount: 0,
+      wagerDuration: "weekly",
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+    createLeague({
+      name: data.leagueName,
+      entryFee: data.wagerAmount,
+      startTime: new Date().getTime(),
+      endTime: new Date().getTime() * 100,
     });
+    // toast({
+    //   title: "You submitted the following values:",
+    //   description: (
+    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+    //     </pre>
+    //   ),
+    // });
   }
+
+  console.log(JSON.stringify(form.formState.errors));
 
   return (
     <>
@@ -108,6 +120,10 @@ const CreateLeagueModal = () => {
                         className="w-full"
                         placeholder="Enter a Wager Amount"
                         {...field}
+                        type="number"
+                        onChange={(e) => {
+                          form.setValue("wagerAmount", Number(e.target.value));
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -116,12 +132,15 @@ const CreateLeagueModal = () => {
               />
               <FormField
                 control={form.control}
-                name="wagerAmount"
-                render={({}) => (
+                name="wagerDuration"
+                render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Rewards Frequency</FormLabel>
                     <FormControl>
-                      <Select>
+                      <Select
+                        defaultValue="weekly"
+                        onOpenChange={() => field.onChange(field.value)}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select rewards frequency" />
                         </SelectTrigger>
@@ -138,7 +157,9 @@ const CreateLeagueModal = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit">
+                {isPending ? "Creating..." : "Submit"}
+              </Button>
             </form>
           </Form>
         </DialogContent>
