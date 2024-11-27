@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
+// import { Button } from "../ui/button";
+import ConnectWallet from "../ConnectWallet"
 
 const Navbar = () => {
   return (
@@ -41,10 +42,11 @@ const Navbar = () => {
             </Link>
           </div>
         </nav>
-        <Button className="bg-black rounded-3xl px-6 py-6 text-md">
-          Get started
-        </Button>
-      </header>
+        <ConnectWallet theme="light" />
+        {/* <Button className="bg-black rounded-3xl px-6 py-6 text-md"> */}
+        {/* Get started
+        </ConnectWallet> */}
+      </header >
     </>
   );
 };
