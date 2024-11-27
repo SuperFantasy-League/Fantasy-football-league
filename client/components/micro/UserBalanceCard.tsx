@@ -3,7 +3,6 @@ import UseFetchBalance from "@/hooks/contract-hooks/useFetchBalance";
 import DepositModal from "../macro/DepositModal";
 import { formatEther } from "viem";
 import { useEffect, useState } from "react";
-
 import WithdrawModal from "../macro/WithdrawModal";
 import LoadingModal from "../LoadingModal";
 

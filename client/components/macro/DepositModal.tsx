@@ -1,20 +1,20 @@
 "use client";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,27 +33,27 @@ import { useEffect, useState } from "react";
 const liskSepolia = defineChain(4202);
 
 const contract = getContract({
-  address: "0x47F5fa8f71A6E2672A6E3596d153fb0FA1e5b0D1",
-  chain: liskSepolia,
-  client,
+    address: "0x47F5fa8f71A6E2672A6E3596d153fb0FA1e5b0D1",
+    chain: liskSepolia,
+    client,
 });
 
 const FormSchema = z.object({
-  amount: z.number().positive().gt(0, {
-    message: "Deposit amount must be a positive number greater than 0.",
-  }),
+    amount: z.number().positive().gt(0, {
+        message: "Deposit amount must be a positive number greater than 0.",
+    }),
 });
 
 const DepositModal = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      amount: 0,
-    },
-  });
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+            amount: 0,
+        },
+    });
 
   const {
     mutate: sendTx,
@@ -63,37 +63,37 @@ const DepositModal = () => {
     // isError: depositError,
   } = useSendTransaction();
 
-  if (transactionResult) {
-    console.log("transaction result", transactionResult);
-  }
+    if (transactionResult) {
+        console.log("transaction result", transactionResult);
+    }
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    const transaction = prepareContractCall({
-      contract,
-      method: "function deposit() external payable",
-      // value: BigInt(Number(data.amount)),
-      value: parseEther(data.amount.toString()),
-      params: [],
-    });
-    sendTx(transaction);
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">
-            {JSON.stringify(data.amount, null, 2)}
-          </code>
-        </pre>
-      ),
-    });
-  }
+    function onSubmit(data: z.infer<typeof FormSchema>) {
+        const transaction = prepareContractCall({
+            contract,
+            method: "function deposit() external payable",
+            // value: BigInt(Number(data.amount)),
+            value: parseEther(data.amount.toString()),
+            params: [],
+        });
+        sendTx(transaction);
+        toast({
+            title: "You submitted the following values:",
+            description: (
+                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                    <code className="text-white">
+                        {JSON.stringify(data.amount, null, 2)}
+                    </code>
+                </pre>
+            ),
+        });
+    }
 
-  const { data, isLoading, isError } = useWalletBalance({
-    client,
-    address: undefined,
-    chain: liskSepolia,
-  });
-  // console.log("balance", data?.displayValue, data?.symbol);
+    const { data, isLoading, isError } = useWalletBalance({
+        client,
+        address: undefined,
+        chain: liskSepolia,
+    });
+    // console.log("balance", data?.displayValue, data?.symbol);
 
   useEffect(() => {
     if (isSuccess) {
