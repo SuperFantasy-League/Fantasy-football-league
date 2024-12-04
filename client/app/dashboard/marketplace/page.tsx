@@ -5,10 +5,10 @@ export default function Home() {
   const nfts = [
     {
       id: 1,
-      name: "Mohammed Salah #1234",
-      description: "The Egyptian King.",
+      name: "Mo",
+      description: "The King Squad.",
       price: "50",
-      image: "/images/4.jpg", // Path to the image
+      image: "/images/alltime.jpg", // Path to the image
     },
     {
       id: 2,
