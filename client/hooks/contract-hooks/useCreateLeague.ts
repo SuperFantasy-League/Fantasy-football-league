@@ -14,7 +14,7 @@ const useCreateLeague = () => {
   // ) external payable returns (address, uint256)
   const contract = getContract({
     client,
-    address: "0x0C409F954d6F86329A89CD4519306b3A2653f648",
+    address: "0xdA7DA915e3e87B7eeD2E4A9e66dCebb15c34C2Cb",
     chain: liskSepolia,
   });
   // Get the sendTransaction hook
